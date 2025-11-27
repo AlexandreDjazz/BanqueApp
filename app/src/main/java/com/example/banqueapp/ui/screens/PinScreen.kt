@@ -8,13 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
 fun PinScreen(
-    navController: NavController,
-    onPinEntered: (String) -> Unit
+    navController: NavHostController,
+    onPinSet: (String) -> Unit
 ) {
     var pin by remember { mutableStateOf("") }
 
@@ -23,31 +24,32 @@ fun PinScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(16.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Entrez votre code PIN", style = MaterialTheme.typography.headlineMedium)
+            Text("Définir votre code PIN", style = MaterialTheme.typography.headlineMedium)
             OutlinedTextField(
                 value = pin,
                 onValueChange = { pin = it },
-                label = { Text("Code PIN") },
+                label = { Text("PIN") },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation()
             )
-            Button(onClick = { onPinEntered(pin) }) {
+            Button(onClick = { onPinSet(pin) }) {
                 Text("Valider")
-            }
-            TextButton(onClick = { navController.popBackStack() }) {
-                Text("Retour")
             }
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PinScreenPreview() {
     val navController = rememberNavController()
-    PinScreen(navController = navController, onPinEntered = {})
+    PinScreen(
+        navController = navController,
+        onPinSet = {}
+    )
 }

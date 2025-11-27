@@ -1,20 +1,8 @@
 package com.example.banqueapp.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -22,13 +10,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-
+import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
 fun SignInScreen(
-    onSignIn: (String, String, String) -> Unit,
-    navController: NavHostController
-    ) {
+    navController: NavHostController,
+    onSignIn: (String, String, String) -> Unit
+) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -38,9 +26,9 @@ fun SignInScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(16.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text("Inscription", style = MaterialTheme.typography.headlineMedium)
             OutlinedTextField(
@@ -76,5 +64,9 @@ fun SignInScreen(
 @Composable
 fun SignInScreenPreview() {
     val navController = rememberNavController()
-    SignInScreen(navController = navController, onSignIn = { _, _, _ -> })
+    SignInScreen(
+        navController = navController,
+        onSignIn = { _, _, _ -> }
+    )
 }
+

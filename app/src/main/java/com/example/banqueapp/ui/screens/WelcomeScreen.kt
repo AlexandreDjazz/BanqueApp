@@ -16,20 +16,14 @@ fun WelcomeScreen(
     onSignInClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "Bienvenue sur Bank",
-                style = MaterialTheme.typography.headlineLarge
-            )
-            Spacer(modifier = Modifier.height(32.dp))
+            Text("Bienvenue sur BanqueApp", style = MaterialTheme.typography.headlineMedium)
             Button(onClick = onLoginClick) {
                 Text("Se connecter")
             }
@@ -39,6 +33,7 @@ fun WelcomeScreen(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

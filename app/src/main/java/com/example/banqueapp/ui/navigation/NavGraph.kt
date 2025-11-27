@@ -5,17 +5,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.ui.screens.LoginScreen
-import com.example.banqueapp.ui.screens.PinScreen
-import com.example.banqueapp.ui.screens.SignInScreen
-import com.example.banqueapp.ui.screens.WelcomeScreen
+import com.example.banqueapp.ui.screens.*
+import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
-fun AppNavGraph(navController: NavHostController = rememberNavController()) {
+fun AppNavGraph(
+    userViewModel: UserViewModel,
+    navController: NavHostController = rememberNavController()
+) {
     NavHost(
         navController = navController,
         startDestination = Destinations.WELCOME
     ) {
+
+        var currentUserId: Int? = null
+
         composable(Destinations.WELCOME) {
             WelcomeScreen(
                 onLoginClick = { navController.navigate(Destinations.LOGIN) },
@@ -24,22 +28,46 @@ fun AppNavGraph(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Destinations.LOGIN) {
-            LoginScreen({ email, password ->
-                navController.navigate(Destinations.PIN)
-                // ici tu peux appeler ton ViewModel pour la connexion
-            }, navController)
+            LoginScreen(
+                navController = navController,
+                onLogin = { email, password ->
+                    userViewModel.login(email, password) { success ->
+                        if (success) {
+                            navController.navigate(Destinations.PIN)
+                        }
+                    }
+                }
+            )
         }
 
         composable(Destinations.SIGNIN) {
-            SignInScreen({ name, email, password ->
-                // ici tu peux appeler ton ViewModel pour l'inscription
-            }, navController)
+            SignInScreen(
+                navController = navController,
+                onSignIn = { name, email, password ->
+                    userViewModel.signUp(name, email, password) {
+                        navController.navigate(Destinations.WELCOME)
+                    }
+                }
+            )
         }
 
         composable(Destinations.PIN) {
-            PinScreen(navController = navController) { pin ->
-                // ici tu peux vérifier le PIN et naviguer vers l'écran principal de l'app
-            }
+            PinScreen(
+                navController = navController,
+                onPinSet = { pin ->
+                    currentUserId?.let { id ->
+                        userViewModel.setPin(id, pin) {
+                            navController.navigate(Destinations.HOME) {
+                                popUpTo(Destinations.WELCOME) { inclusive = true }
+                            }
+                        }
+                    }
+                }
+            )
+        }
+
+        composable(Destinations.HOME) {
+            HomeScreen({})
         }
     }
 }

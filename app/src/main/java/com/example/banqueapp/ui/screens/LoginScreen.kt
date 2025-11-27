@@ -10,12 +10,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
 fun LoginScreen(
-    onLogin: (String, String) -> Unit,
-    navController: NavHostController
-    ) {
+    navController: NavHostController,
+    onLogin: (String, String) -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -24,9 +25,9 @@ fun LoginScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(
+            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(16.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text("Connexion", style = MaterialTheme.typography.headlineMedium)
             OutlinedTextField(
@@ -42,6 +43,7 @@ fun LoginScreen(
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation()
             )
+
             Button(onClick = { onLogin(email, password) }) {
                 Text("Se connecter")
             }
@@ -52,9 +54,14 @@ fun LoginScreen(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
     val navController = rememberNavController()
-    LoginScreen(navController = navController, onLogin = { _, _ -> })
+    LoginScreen(
+        navController = navController,
+        onLogin = { _, _ -> }
+    )
 }
+
