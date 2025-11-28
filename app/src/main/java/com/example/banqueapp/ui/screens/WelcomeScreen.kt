@@ -10,13 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+
 @Composable
 fun WelcomeScreen(
+    modifier: Modifier = Modifier,
     onLoginClick: () -> Unit,
     onSignInClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -24,9 +26,11 @@ fun WelcomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text("Bienvenue sur BanqueApp", style = MaterialTheme.typography.headlineMedium)
+
             Button(onClick = onLoginClick) {
                 Text("Se connecter")
             }
+
             Button(onClick = onSignInClick) {
                 Text("S'inscrire")
             }
@@ -35,10 +39,13 @@ fun WelcomeScreen(
 }
 
 
+
+
 @Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview() {
     WelcomeScreen(
+        modifier = Modifier,
         onLoginClick = {},
         onSignInClick = {}
     )

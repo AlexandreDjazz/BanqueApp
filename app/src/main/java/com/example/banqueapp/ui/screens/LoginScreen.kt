@@ -8,20 +8,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController,
-    onLogin: (String, String) -> Unit
+    modifier: Modifier = Modifier,
+    userViewModel: UserViewModel? = null,
+    onLoginSuccess: () -> Unit,
+    onBack: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -30,12 +30,14 @@ fun LoginScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text("Connexion", style = MaterialTheme.typography.headlineMedium)
+
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
                 singleLine = true
             )
+
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -44,24 +46,26 @@ fun LoginScreen(
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            Button(onClick = { onLogin(email, password) }) {
+            Button(onClick = {
+                userViewModel?.login(email, password) { success ->
+                    if (success) onLoginSuccess()
+                }
+            }) {
                 Text("Se connecter")
             }
-            TextButton(onClick = { navController.popBackStack() }) {
+
+            TextButton(onClick = onBack) {
                 Text("Retour")
             }
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    val navController = rememberNavController()
     LoginScreen(
-        navController = navController,
-        onLogin = { _, _ -> }
+        onLoginSuccess = {},
+        onBack = {}
     )
 }
-

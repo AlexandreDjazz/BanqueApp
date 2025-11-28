@@ -8,21 +8,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
 fun SignInScreen(
-    navController: NavHostController,
-    onSignIn: (String, String, String) -> Unit
+    modifier: Modifier = Modifier,
+    userViewModel: UserViewModel? = null,
+    onSignInSuccess: () -> Unit,
+    onBack: () -> Unit
 ) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var pin by remember { mutableStateOf("") }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -31,18 +32,21 @@ fun SignInScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text("Inscription", style = MaterialTheme.typography.headlineMedium)
+
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
                 label = { Text("Nom") },
                 singleLine = true
             )
+
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
                 singleLine = true
             )
+
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -50,23 +54,36 @@ fun SignInScreen(
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation()
             )
-            Button(onClick = { onSignIn(name, email, password) }) {
+
+            OutlinedTextField(
+                value = pin,
+                onValueChange = { pin = it },
+                label = { Text("Code PIN") },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            Button(onClick = {
+                userViewModel?.signUp(name, email, password, pin) { success ->
+                    if (success) onSignInSuccess()
+                }
+            }) {
                 Text("S'inscrire")
             }
-            TextButton(onClick = { navController.popBackStack() }) {
+
+            TextButton(onClick = onBack) {
                 Text("Retour")
             }
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview() {
-    val navController = rememberNavController()
     SignInScreen(
-        navController = navController,
-        onSignIn = { _, _, _ -> }
+        onSignInSuccess = {},
+        onBack = {}
     )
 }
-

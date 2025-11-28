@@ -10,12 +10,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.viewModels.UserViewModel
+
 
 @Composable
 fun PinScreen(
     navController: NavHostController,
-    onPinSet: (String) -> Unit
+    userId: String,
+    onLoginPin: (String, String) -> Unit
 ) {
     var pin by remember { mutableStateOf("") }
 
@@ -36,8 +37,11 @@ fun PinScreen(
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation()
             )
-            Button(onClick = { onPinSet(pin) }) {
+            Button(onClick = { onLoginPin(userId, pin) }) {
                 Text("Valider")
+            }
+            TextButton(onClick = { navController.popBackStack() }) {
+                Text("Retour")
             }
         }
     }
@@ -50,6 +54,7 @@ fun PinScreenPreview() {
     val navController = rememberNavController()
     PinScreen(
         navController = navController,
-        onPinSet = {}
+        userId = "",
+        onLoginPin = { _, _-> }
     )
 }
