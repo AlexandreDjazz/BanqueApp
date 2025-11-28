@@ -10,9 +10,16 @@ class UserViewModel(
     private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
+    var currentUser: User? = null
+        private set
     fun isValidEmail(email: String): Boolean {
         val emailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}".toRegex()
         return emailRegex.matches(email)
+    }
+
+    fun isValidPin(pin: String): Boolean {
+        val pinRegex = """\d{6}""".toRegex()
+        return pinRegex.matches(pin)
     }
 
     fun signUp(
@@ -24,6 +31,7 @@ class UserViewModel(
     ) {
         val user = User(id = 0, name = name, email = email, password = password, pin = pin)
         if (!isValidEmail(email)) return
+        if (!isValidPin(pin)) return
         viewModelScope.launch {
             userRepository.addUser(user)
             onSuccess(true)
@@ -38,11 +46,17 @@ class UserViewModel(
         viewModelScope.launch {
             val user = userRepository.getUserByEmail(email)
             if(user?.password == password) {
+                currentUser = user
                 onSuccess(true)
             } else {
                 onSuccess(false)
             }
         }
+    }
+
+    fun checkPin(inputPin: String): Boolean {
+
+        return currentUser?.pin == inputPin
     }
 }
 

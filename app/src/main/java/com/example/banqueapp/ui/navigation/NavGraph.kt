@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.LoginScreen
+import com.example.banqueapp.ui.screens.PinScreen
 import com.example.banqueapp.ui.screens.SignInScreen
 import com.example.banqueapp.ui.screens.WelcomeScreen
 import com.example.banqueapp.viewModels.UserViewModel
@@ -29,7 +30,7 @@ fun AppNavGraph(userViewModel: UserViewModel) {
         composable(Destinations.LOGIN) {
             LoginScreen(
                 userViewModel = userViewModel,
-                onLoginSuccess = { navController.navigate(Destinations.HOME) },
+                onLoginSuccess = { navController.navigate(Destinations.PIN) },
                 onBack = { navController.popBackStack() }
             )
         }
@@ -37,7 +38,15 @@ fun AppNavGraph(userViewModel: UserViewModel) {
         composable(Destinations.SIGNIN) {
             SignInScreen(
                 userViewModel = userViewModel,
-                onSignInSuccess = { navController.navigate(Destinations.HOME) },
+                onSignInSuccess = { navController.navigate(Destinations.WELCOME) },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Destinations.PIN) {
+            PinScreen(
+                userViewModel = userViewModel,
+                onPinSuccess = { navController.navigate(Destinations.HOME) },
                 onBack = { navController.popBackStack() }
             )
         }
