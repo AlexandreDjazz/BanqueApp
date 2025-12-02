@@ -4,13 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.banqueapp.data.ThemePreferences
+import com.example.banqueapp.navigation.NavGraph
+import com.example.banqueapp.ui.screens.settings.SettingsViewModel
+import com.example.banqueapp.ui.screens.settings.ThemeMode
 import com.example.banqueapp.ui.theme.BanqueAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +21,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BanqueAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            BanqueApp()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun BanqueApp() {
+    val settingsViewModel: SettingsViewModel = viewModel()
+    val uiState by settingsViewModel.uiState.collectAsState()
+    val systemInDarkTheme = isSystemInDarkTheme()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BanqueAppTheme {
-        Greeting("Android")
+    val darkTheme = when (uiState.themeMode) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.SYSTEM -> systemInDarkTheme
+    }
+
+    BanqueAppTheme(darkTheme = darkTheme) {
+        val navController = rememberNavController()
+        NavGraph(
+            navController = navController,
+            settingsViewModel = settingsViewModel
+        )
     }
 }
