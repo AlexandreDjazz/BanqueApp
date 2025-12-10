@@ -1,18 +1,20 @@
-package com.example.banqueapp.ui.navigation
+package com.example.banqueapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.ui.screens.HomeScreen
-import com.example.banqueapp.ui.screens.LoginScreen
-import com.example.banqueapp.ui.screens.PinScreen
-import com.example.banqueapp.ui.screens.SignInScreen
-import com.example.banqueapp.ui.screens.WelcomeScreen
+import com.example.banqueapp.ui.screens.MainOverlay
+import com.example.banqueapp.ui.screens.auth.LoginScreen
+import com.example.banqueapp.ui.screens.auth.PinScreen
+import com.example.banqueapp.ui.screens.auth.SignInScreen
+import com.example.banqueapp.ui.screens.auth.WelcomeScreen
+import com.example.banqueapp.ui.screens.settings.SettingsViewModel
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
-fun AppNavGraph(userViewModel: UserViewModel) {
+fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewModel) {
     val navController = rememberNavController()
 
     NavHost(
@@ -21,6 +23,15 @@ fun AppNavGraph(userViewModel: UserViewModel) {
     ) {
 
         composable(Destinations.WELCOME) {
+
+            val isLogged = userViewModel.isLogged()
+
+            LaunchedEffect(isLogged) {
+                if (isLogged) {
+                    navController.navigate(Destinations.PIN)
+                }
+            }
+
             WelcomeScreen(
                 onLoginClick = { navController.navigate(Destinations.LOGIN) },
                 onSignInClick = { navController.navigate(Destinations.SIGNIN) }
@@ -46,16 +57,26 @@ fun AppNavGraph(userViewModel: UserViewModel) {
         composable(Destinations.PIN) {
             PinScreen(
                 userViewModel = userViewModel,
-                onPinSuccess = { navController.navigate(Destinations.HOME) },
+                onPinSuccess = {
+                    navController.navigate(Destinations.HOME) {
+                        popUpTo(Destinations.WELCOME) { inclusive = true }
+                    }
+                },
                 onBack = { navController.popBackStack() }
             )
         }
 
         composable(Destinations.HOME) {
-            HomeScreen(
-                onLogout = { navController.navigate(Destinations.WELCOME) }
+            MainOverlay(
+                userViewModel = userViewModel,
+                settingsViewModel = settingsViewModel,
+                onLogout = { navController.navigate(Destinations.WELCOME) {
+                    popUpTo(0) { inclusive = true }
+                }},
+                rootNavController = navController
             )
         }
+
     }
 }
 

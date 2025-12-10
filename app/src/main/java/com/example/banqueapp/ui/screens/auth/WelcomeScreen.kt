@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens
+package com.example.banqueapp.ui.screens.auth
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
