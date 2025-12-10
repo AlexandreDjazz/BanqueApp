@@ -4,8 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,70 +34,111 @@ fun HomeScreen(
     userViewModel: UserViewModel? = null,
     onLogout: () -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Header
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Bonjour $userName", style = MaterialTheme.typography.headlineSmall)
+    var selectedTab by remember { mutableStateOf("home") }
 
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = selectedTab == "account",
+                    onClick = { selectedTab = "account" },
+                    icon = { Icon(Icons.Filled.AccountCircle, contentDescription = "Compte") },
+                    label = { Text("Compte") }
+                )
+                NavigationBarItem(
+                    selected = selectedTab == "home",
+                    onClick = { selectedTab = "home" },
+                    icon = { Icon(Icons.Filled.Home, contentDescription = "Accueil") },
+                    label = { Text("Accueil") }
+                )
+                NavigationBarItem(
+                    selected = selectedTab == "settings",
+                    onClick = { selectedTab = "settings" },
+                    icon = { Icon(Icons.Filled.Settings, contentDescription = "Paramètres") },
+                    label = { Text("Paramètres") }
+                )
+            }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Solde
+    ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .padding(16.dp)
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp)
         ) {
-            Text("Solde du compte", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(balance, fontSize = 28.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
-        }
+            // En-tête
+            Text(
+                text = "Bonjour, $userName",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(top = 16.dp)
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-
-        Text("Historique des transactions", style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.height(8.dp))
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(transactions) { transaction ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFFF2F2F2))
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+            // Carte solde
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Column {
-                        Text(transaction.description, fontSize = 16.sp)
-                        Text(transaction.date, fontSize = 12.sp, color = Color.Gray)
-                    }
-                    Text(transaction.amount, fontSize = 16.sp)
+                    Text("Solde du compte", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                    Text(
+                        balance,
+                        fontSize = 32.sp,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = MaterialTheme.typography.headlineMedium
+                    )
                 }
             }
 
-        }
-        Button(onClick = {
-            userViewModel?.logout { onLogout() }
-        }) {
-            Text("Déconnexion")
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "Historique des transactions 💳",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxHeight(0.75f)
+            ) {
+                items(transactions) { transaction ->
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(2.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(transaction.description, fontSize = 16.sp)
+                                Text(transaction.date, fontSize = 12.sp, color = Color.Gray)
+                            }
+                            Text(
+                                transaction.amount,
+                                fontSize = 16.sp,
+                                color = if (transaction.amount.contains("+")) Color(0xFF2E7D32) else Color(0xFFC62828)
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
-@Preview (showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun BankHomeScreenPreview() {
     val sampleTransactions = listOf(
@@ -103,12 +148,10 @@ fun BankHomeScreenPreview() {
         Transaction(4, "Cadeau", "+50,00 €", "23/11/2025")
     )
 
-
     HomeScreen(
         userName = "Alice Dupont",
-        balance = "1992,81€",
+        balance = "1992,81 €",
         transactions = sampleTransactions,
         onLogout = {}
     )
 }
-
