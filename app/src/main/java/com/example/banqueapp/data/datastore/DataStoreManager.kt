@@ -22,33 +22,23 @@ class DataStoreManager(private val context: Context) {
                 val isLoggedIn = prefs[UserPreferences.IS_LOGGED_IN] ?: false
                 if (!isLoggedIn) null
                 else CurrentUser(
-                    id = prefs[UserPreferences.USER_ID] ?: 0,
-                    name = prefs[UserPreferences.USER_NAME] ?: "",
-                    email = prefs[UserPreferences.USER_EMAIL] ?: ""
+                    id = prefs[UserPreferences.USER_ID] ?: 0
                 )
             }
 
     suspend fun saveUser(id: Int, name: String, email: String) {
         context.dataStore.edit { prefs ->
             prefs[UserPreferences.USER_ID] = id
-            prefs[UserPreferences.USER_NAME] = name
-            prefs[UserPreferences.USER_EMAIL] = email
-            prefs[UserPreferences.IS_LOGGED_IN] = true
         }
     }
 
     suspend fun clearUser() {
         context.dataStore.edit { prefs ->
-            prefs[UserPreferences.IS_LOGGED_IN] = false
             prefs.remove(UserPreferences.USER_ID)
-            prefs.remove(UserPreferences.USER_NAME)
-            prefs.remove(UserPreferences.USER_EMAIL)
         }
     }
 }
 
 data class CurrentUser(
-    val id: Int,
-    val name: String,
-    val email: String
+    val id: Int
 )
