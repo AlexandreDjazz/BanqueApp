@@ -13,13 +13,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.ThemeMode
+import com.example.banqueapp.ui.components.BottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToChangePassword: () -> Unit = {},
-    viewModel: SettingsViewModel = viewModel()
+    viewModel: SettingsViewModel = viewModel(),
+    onProfile: () -> Unit,
+    onHome: () -> Unit,
+    onSettings: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showThemeDialog by remember { mutableStateOf(false) }
@@ -36,6 +40,13 @@ fun SettingsScreen(
                         )
                     }
                 }
+            )
+        },
+        bottomBar = {
+            BottomBar(
+                onProfile = onProfile,
+                onHome = onHome,
+                onSettings = onSettings
             )
         }
     ) { paddingValues ->

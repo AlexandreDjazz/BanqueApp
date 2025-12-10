@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.banqueapp.data.model.ATM
+import com.example.banqueapp.ui.components.BottomBar
 import com.example.banqueapp.viewModels.MapViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -36,7 +37,10 @@ import com.google.maps.android.compose.*
 fun MapScreen(
     onNavigateBack: () -> Unit = {},
     showBackButton: Boolean = false,
-    viewModel: MapViewModel = viewModel()
+    viewModel: MapViewModel = viewModel(),
+    onProfile: () -> Unit,
+    onHome: () -> Unit,
+    onSettings: () -> Unit
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -99,6 +103,13 @@ fun MapScreen(
                     )
                 }
             }
+        },
+        bottomBar = {
+            BottomBar(
+                onProfile = onProfile,
+                onHome = onHome,
+                onSettings = onSettings
+            )
         }
     ) { paddingValues ->
         Column(

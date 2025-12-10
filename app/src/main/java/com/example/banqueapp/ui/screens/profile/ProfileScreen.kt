@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.domain.models.User
+import com.example.banqueapp.ui.components.BottomBar
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
 import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
@@ -23,7 +24,11 @@ import com.example.banqueapp.viewModels.UserViewModel
 @Composable
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    onProfile: () -> Unit,
+    onHome: () -> Unit,
+    onSettings: () -> Unit,
+
 ) {
     val uiState by userViewModel.uiState.collectAsState()
 
@@ -35,7 +40,10 @@ fun ProfileScreen(
             ProfileContent(
                 user = currentState.user,
                 userViewModel = userViewModel,
-                onNavigateToSettings = onNavigateToSettings
+                onNavigateToSettings = onNavigateToSettings,
+                onProfile = onProfile,
+                onHome = onHome,
+                onSettings = onSettings
             )
         }
     }
@@ -46,7 +54,10 @@ fun ProfileScreen(
 private fun ProfileContent(
     user: User,
     userViewModel: UserViewModel,
-    onNavigateToSettings: () -> Unit
+    onNavigateToSettings: () -> Unit,
+    onProfile: () -> Unit,
+    onHome: () -> Unit,
+    onSettings: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -54,6 +65,13 @@ private fun ProfileContent(
         topBar = {
             TopAppBar(
                 title = { Text("Mon Profil") }
+            )
+        },
+        bottomBar = {
+            BottomBar(
+                onProfile = onProfile,
+                onHome = onHome,
+                onSettings = onSettings
             )
         }
     ) { paddingValues ->

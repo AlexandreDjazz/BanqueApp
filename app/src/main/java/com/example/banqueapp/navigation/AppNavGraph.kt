@@ -102,7 +102,10 @@ fun AppNavGraph(
 
         composable(Destinations.MAP) {
             MapScreen(
-                onNavigateBack = {  navController.navigate(Destinations.HOME) }
+                onNavigateBack = {  navController.navigate(Destinations.HOME) },
+                onProfile = { navController.navigate(Destinations.PROFILE) },
+                onHome = { navController.navigate(Destinations.HOME) },
+                onSettings = { navController.navigate(Destinations.SETTINGS) },
             )
         }
 
@@ -110,14 +113,20 @@ fun AppNavGraph(
             SettingsScreen(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToChangePassword = {},
-                viewModel = settingsViewModel
+                viewModel = settingsViewModel,
+                onProfile = { navController.navigate(Destinations.PROFILE) },
+                onHome = { navController.navigate(Destinations.HOME) },
+                onSettings = { navController.navigate(Destinations.SETTINGS) },
             )
         }
 
         composable(Destinations.PROFILE) {
             ProfileScreen(
                 onNavigateToSettings = { navController.navigate(Destinations.SETTINGS) },
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                onProfile = { navController.navigate(Destinations.PROFILE) },
+                onHome = { navController.navigate(Destinations.HOME) },
+                onSettings = { navController.navigate(Destinations.SETTINGS) },
             )
         }
 

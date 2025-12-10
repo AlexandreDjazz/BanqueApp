@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
@@ -49,7 +49,7 @@ fun BottomBar(
         ) {
             IconButton(onClick = { onProfile() }) {
                 Icon(
-                    Icons.Outlined.Home,
+                    Icons.Outlined.Person,
                     tint = Color(0xFFAF97FF),
                     modifier = Modifier.size(35.dp),
                     contentDescription = "Profile Button"
@@ -65,7 +65,7 @@ fun BottomBar(
             ) {
                 IconButton(onClick = { onHome() }) {
                     Icon(
-                        Icons.Outlined.Add,
+                        Icons.Outlined.Home,
                         tint = Color.White,
                         modifier = Modifier.size(30.dp),
                         contentDescription = "Home Button"
@@ -75,7 +75,7 @@ fun BottomBar(
 
             IconButton(onClick = onSettings) {
                 Icon(
-                    Icons.Outlined.Person,
+                    Icons.Outlined.Settings,
                     tint = Color(0xFFAF97FF),
                     modifier = Modifier.size(35.dp),
                     contentDescription = "Settings Button"
