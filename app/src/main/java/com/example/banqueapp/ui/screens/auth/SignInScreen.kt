@@ -15,7 +15,7 @@ import com.example.banqueapp.viewModels.UserViewModel
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel? = null,
+    userViewModel: UserViewModel,
     onSignInSuccess: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -67,9 +67,8 @@ fun SignInScreen(
             )
 
             Button(onClick = {
-                userViewModel?.signUp(name, email, password, pin) { success, message ->
+                userViewModel.onSignUp(name, email, password, pin) { success, message ->
                     if (success) {
-                        Toast.makeText(context, "Inscription réussie", Toast.LENGTH_SHORT).show()
                         onSignInSuccess()
                     } else {
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -86,7 +85,7 @@ fun SignInScreen(
     }
 }
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview() {
@@ -95,3 +94,4 @@ fun SignInScreenPreview() {
         onBack = {}
     )
 }
+*/
