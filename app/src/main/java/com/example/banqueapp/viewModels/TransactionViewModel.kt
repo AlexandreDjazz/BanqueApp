@@ -35,7 +35,12 @@ class TransactionViewModel(
         }
     }
 
-
+    fun deleteTransaction(userId: Int, transactionId: Int) {
+        viewModelScope.launch {
+            transactionRepository.deleteTransaction(transactionId)
+            loadTransactions(userId)
+        }
+    }
 
     fun clearUserTransactions(userId: Int) {
         viewModelScope.launch {

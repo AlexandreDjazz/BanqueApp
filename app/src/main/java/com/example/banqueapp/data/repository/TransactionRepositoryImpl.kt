@@ -20,6 +20,7 @@ class TransactionRepositoryImpl(private val transactionDao: TransactionDao) : Tr
         return entity.id.toLong()
     }
 
+    override suspend fun deleteTransaction(transactionId: Int) = transactionDao.deleteTransactionById(transactionId)
 
     override suspend fun deleteAllTransactionsForUser(userId: Int) {
         val transactions = transactionDao.getTransactions(userId)
