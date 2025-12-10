@@ -9,9 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -20,13 +18,12 @@ import kotlin.random.Random
 
 @Composable
 fun PinScreen(
-    userViewModel: UserViewModel? = null,
+    userViewModel: UserViewModel,
     onPinSuccess: () -> Unit,
     onBack: () -> Unit
 ) {
     var pin by remember { mutableStateOf("") }
     val maxPinLength = 6
-    val context = LocalContext.current
 
 
     Column(
@@ -75,7 +72,7 @@ fun PinScreen(
                 Text("Valider")
             }
         }
-        TextButton(onClick = onBack) {
+        TextButton(onClick = {onBack()}) {
             Text("Retour")
         }
     }
@@ -107,6 +104,7 @@ fun PinButton(digit: Int, onClick: (Int) -> Unit) {
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun PinScreenPreview() {
@@ -115,3 +113,4 @@ fun PinScreenPreview() {
         onBack = {}
     )
 }
+*/

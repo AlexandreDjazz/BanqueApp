@@ -67,7 +67,12 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
                         popUpTo(Destinations.WELCOME) { inclusive = true }
                     }
                 },
-                onBack = { navController.popBackStack() }
+                onBack = {
+                    userViewModel.onLogout()
+                    navController.navigate(Destinations.WELCOME) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
 
