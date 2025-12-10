@@ -14,17 +14,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.banqueapp.domain.models.User
+import com.example.banqueapp.ui.screens.utils.ErrorScreen
+import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
-    viewModel: ProfileViewModel = viewModel(),
     userViewModel: UserViewModel
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by userViewModel.uiState.collectAsState()
+
+    when (val currentState = uiState) {
+        is UserUiState.Loading -> Box(Modifier.fillMaxSize()) { CircularProgressIndicator() }
+        is UserUiState.LoggedOut -> Text("Non connecté")
+        is UserUiState.Error -> ErrorScreen(currentState.message)
+        is UserUiState.LoggedIn -> {
+            ProfileContent(
+                user = currentState.user,
+                userViewModel = userViewModel,
+                onNavigateToSettings = onNavigateToSettings
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ProfileContent(
+    user: User,
+    userViewModel: UserViewModel,
+    onNavigateToSettings: () -> Unit
+) {
     val scrollState = rememberScrollState()
 
     Scaffold(
@@ -40,7 +63,7 @@ fun ProfileScreen(
                 .padding(paddingValues)
                 .verticalScroll(scrollState)
         ) {
-            ProfileHeader(userProfile = uiState.userProfile)
+            ProfileHeader(user = user)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -49,60 +72,48 @@ fun ProfileScreen(
             ProfileInfoItem(
                 icon = Icons.Default.Person,
                 label = "Nom complet",
-                value = uiState.userProfile.name
+                value = user.name  // ← Directement depuis User
             )
 
             ProfileInfoItem(
                 icon = Icons.Default.Email,
                 label = "Email",
-                value = uiState.userProfile.email
+                value = user.email
             )
 
+            // Phone manquant dans User → à ajouter en DB ou placeholder
             ProfileInfoItem(
                 icon = Icons.Default.Phone,
                 label = "Téléphone",
-                value = uiState.userProfile.phone
+                value = "Non renseigné"  // ou ajoute phone à UserEntity
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            ProfileSection(title = "Informations bancaires")
-
-            ProfileInfoItem(
-                icon = Icons.Default.AccountBox,
-                label = "Numéro de compte",
-                value = uiState.userProfile.accountNumber
-            )
-
-
 
             Spacer(modifier = Modifier.height(24.dp))
 
             ProfileSection(title = "Actions")
 
-            //manque action
             ProfileActionButton(
                 icon = Icons.Default.Edit,
                 text = "Modifier le profil",
-                onClick = {  }
+                onClick = { /* Navigue vers EditProfile */ }
             )
-            //manque actio
+
             ProfileActionButton(
-                icon = Icons.Default.Lock,
-                text = "Sécurité et confidentialité",
-                onClick = {  }
+                icon = Icons.Default.Settings,
+                text = "Paramètres",
+                onClick = onNavigateToSettings  // ← Fonctionne déjà
             )
-            //manque action
+
             ProfileActionButton(
                 icon = Icons.Default.Info,
                 text = "Aide et support",
-                onClick = {  }
+                onClick = { /* Ouvre support */ }
             )
 
             ProfileActionButton(
                 icon = Icons.Default.ExitToApp,
                 text = "Se déconnecter",
-                onClick = { userViewModel.logout() },
+                onClick = { userViewModel.onLogout() },  // ✅ Utilise UserViewModel
                 isDestructive = true
             )
         }
@@ -111,7 +122,7 @@ fun ProfileScreen(
 
 //pas fini
 @Composable
-fun ProfileHeader(userProfile: UserProfile) {
+fun ProfileHeader(user: User) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -137,14 +148,14 @@ fun ProfileHeader(userProfile: UserProfile) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = userProfile.name,
+            text = user.name,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
 
         Text(
-            text = userProfile.email,
+            text = user.email,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
         )

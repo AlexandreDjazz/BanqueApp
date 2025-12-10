@@ -11,11 +11,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.banqueapp.ui.screens.utils.ErrorScreen
+import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 
 data class Transaction(
@@ -31,11 +34,40 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     balance: String = "0,00 €",
     transactions: List<Transaction> = emptyList(),
-    userViewModel: UserViewModel? = null
+    userViewModel: UserViewModel
 ) {
+    val uiState by userViewModel.uiState.collectAsState()
 
-    val userName = userViewModel?.currentUser?.name ?: "User"
+    when (val currentState = uiState) {
+        is UserUiState.Loading -> {
+            Box(Modifier.fillMaxSize()) {
+                CircularProgressIndicator(Modifier.align(Alignment.Center))
+            }
+        }
+        is UserUiState.LoggedOut -> {
+            Text("Non connecté")
+        }
+        is UserUiState.Error -> {
+            ErrorScreen(currentState.message)
+        }
+        is UserUiState.LoggedIn -> {
+            HomeContent(
+                modifier = modifier,
+                userName = currentState.user.name,
+                balance = balance,
+                transactions = transactions
+            )
+        }
+    }
+}
 
+@Composable
+private fun HomeContent(
+    modifier: Modifier,
+    userName: String,
+    balance: String,
+    transactions: List<Transaction>
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -157,7 +189,7 @@ fun HomeScreen(
 
 @Composable
 private fun ActionCard(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier
@@ -240,6 +272,7 @@ private fun TransactionItem(transaction: Transaction) {
     }
 }
 
+/*
 @Preview(showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun HomeScreenPreview() {
@@ -259,3 +292,4 @@ fun HomeScreenPreview() {
         )
     }
 }
+*/

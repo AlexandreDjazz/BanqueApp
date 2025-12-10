@@ -13,7 +13,7 @@ import com.example.banqueapp.viewModels.UserViewModel
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    userViewModel: UserViewModel? = null,
+    userViewModel: UserViewModel,
     onLoginSuccess: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -47,8 +47,8 @@ fun LoginScreen(
             )
 
             Button(onClick = {
-                userViewModel?.login(email, password) { success ->
-                    if (success) onLoginSuccess()
+                userViewModel.onLogin(email, password) {
+                    onLoginSuccess()
                 }
             }) {
                 Text("Se connecter")
@@ -61,6 +61,7 @@ fun LoginScreen(
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
@@ -68,4 +69,4 @@ fun LoginScreenPreview() {
         onLoginSuccess = {},
         onBack = {}
     )
-}
+}*/

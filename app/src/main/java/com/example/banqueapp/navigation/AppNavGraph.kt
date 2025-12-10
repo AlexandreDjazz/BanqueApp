@@ -2,6 +2,8 @@ package com.example.banqueapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -11,6 +13,7 @@ import com.example.banqueapp.ui.screens.auth.PinScreen
 import com.example.banqueapp.ui.screens.auth.SignInScreen
 import com.example.banqueapp.ui.screens.auth.WelcomeScreen
 import com.example.banqueapp.ui.screens.settings.SettingsViewModel
+import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
@@ -23,12 +26,13 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
     ) {
 
         composable(Destinations.WELCOME) {
+            val uiState by userViewModel.uiState.collectAsState()
 
-            val isLogged = userViewModel.isLogged()
-
-            LaunchedEffect(isLogged) {
-                if (isLogged) {
-                    navController.navigate(Destinations.PIN)
+            LaunchedEffect(uiState) {
+                if (uiState is UserUiState.LoggedIn) {
+                    navController.navigate(Destinations.PIN) {
+                        popUpTo(Destinations.WELCOME) { inclusive = true }
+                    }
                 }
             }
 
@@ -37,6 +41,7 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
                 onSignInClick = { navController.navigate(Destinations.SIGNIN) }
             )
         }
+
 
         composable(Destinations.LOGIN) {
             LoginScreen(
@@ -62,7 +67,12 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
                         popUpTo(Destinations.WELCOME) { inclusive = true }
                     }
                 },
-                onBack = { navController.popBackStack() }
+                onBack = {
+                    userViewModel.onLogout()
+                    navController.navigate(Destinations.WELCOME) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
 
