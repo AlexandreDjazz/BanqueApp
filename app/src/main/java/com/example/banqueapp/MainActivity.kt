@@ -8,20 +8,11 @@ import com.example.banqueapp.data.db.DatabaseProvider
 import com.example.banqueapp.data.repository.UserRepositoryImpl
 import com.example.banqueapp.navigation.AppNavGraph
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.ui.screens.settings.SettingsViewModel
-import com.example.banqueapp.ui.screens.settings.ThemeMode
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.data.ThemePreferences
 import com.example.banqueapp.ui.screens.settings.SettingsViewModel
 import com.example.banqueapp.ui.screens.settings.ThemeMode
 import com.example.banqueapp.ui.theme.BanqueAppTheme
@@ -41,13 +32,13 @@ class MainActivity : ComponentActivity() {
 
         userViewModel = UserViewModel(userRepository, dataStoreManager)
         setContent {
-            BanqueApp()
+            BanqueApp(userViewModel = userViewModel)
         }
     }
 }
 
 @Composable
-fun BanqueApp() {
+fun BanqueApp(userViewModel: UserViewModel) {
     val settingsViewModel: SettingsViewModel = viewModel()
     val uiState by settingsViewModel.uiState.collectAsState()
     val systemInDarkTheme = isSystemInDarkTheme()
@@ -59,9 +50,8 @@ fun BanqueApp() {
     }
 
     BanqueAppTheme(darkTheme = darkTheme) {
-        val navController = rememberNavController()
         AppNavGraph(
-            navController = navController,
+            userViewModel = userViewModel,
             settingsViewModel = settingsViewModel
         )
     }

@@ -1,6 +1,5 @@
-package com.example.banqueapp.ui.screens
+package com.example.banqueapp.ui.screens.auth
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape

@@ -1,24 +1,29 @@
-package com.example.banqueapp.ui.screens
+package com.example.banqueapp.ui.screens.auth
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
-fun LoginScreen(
+fun SignInScreen(
     modifier: Modifier = Modifier,
     userViewModel: UserViewModel? = null,
-    onLoginSuccess: () -> Unit,
+    onSignInSuccess: () -> Unit,
     onBack: () -> Unit
 ) {
+    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var pin by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -29,7 +34,14 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Connexion", style = MaterialTheme.typography.headlineMedium)
+            Text("Inscription", style = MaterialTheme.typography.headlineMedium)
+
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Nom") },
+                singleLine = true
+            )
 
             OutlinedTextField(
                 value = email,
@@ -46,12 +58,25 @@ fun LoginScreen(
                 visualTransformation = PasswordVisualTransformation()
             )
 
+            OutlinedTextField(
+                value = pin,
+                onValueChange = { pin = it },
+                label = { Text("Code PIN") },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation()
+            )
+
             Button(onClick = {
-                userViewModel?.login(email, password) { success ->
-                    if (success) onLoginSuccess()
+                userViewModel?.signUp(name, email, password, pin) { success, message ->
+                    if (success) {
+                        Toast.makeText(context, "Inscription réussie", Toast.LENGTH_SHORT).show()
+                        onSignInSuccess()
+                    } else {
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }) {
-                Text("Se connecter")
+                Text("S'inscrire")
             }
 
             TextButton(onClick = onBack) {
@@ -61,11 +86,12 @@ fun LoginScreen(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
-    LoginScreen(
-        onLoginSuccess = {},
+fun SignInScreenPreview() {
+    SignInScreen(
+        onSignInSuccess = {},
         onBack = {}
     )
 }

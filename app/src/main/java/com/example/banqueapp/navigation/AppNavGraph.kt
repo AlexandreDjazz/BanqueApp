@@ -5,14 +5,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.navigation.Screen
-import com.example.banqueapp.ui.screens.HomeScreen
-import com.example.banqueapp.ui.screens.LoginScreen
-import com.example.banqueapp.ui.screens.PinScreen
-import com.example.banqueapp.ui.screens.SignInScreen
-import com.example.banqueapp.ui.screens.WelcomeScreen
-import com.example.banqueapp.ui.screens.profile.ProfileScreen
-import com.example.banqueapp.ui.screens.settings.SettingsScreen
+import com.example.banqueapp.ui.screens.MainOverlay
+import com.example.banqueapp.ui.screens.auth.LoginScreen
+import com.example.banqueapp.ui.screens.auth.PinScreen
+import com.example.banqueapp.ui.screens.auth.SignInScreen
+import com.example.banqueapp.ui.screens.auth.WelcomeScreen
 import com.example.banqueapp.ui.screens.settings.SettingsViewModel
 import com.example.banqueapp.viewModels.UserViewModel
 
@@ -60,43 +57,23 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
         composable(Destinations.PIN) {
             PinScreen(
                 userViewModel = userViewModel,
-                onPinSuccess = { navController.navigate(Destinations.HOME) },
+                onPinSuccess = {
+                    navController.navigate(Destinations.HOME) {
+                        popUpTo(Destinations.WELCOME) { inclusive = true }
+                    }
+                },
                 onBack = { navController.popBackStack() }
             )
         }
-
+        
         composable(Destinations.HOME) {
-            HomeScreen(
+            MainOverlay(
                 userViewModel = userViewModel,
-                onLogout = { navController.navigate(Destinations.WELCOME) }
-            )
-        }
-
-        composable(Destinations.PROFILE) {
-            ProfileScreen(
-                onNavigateToSettings = {
-                    navController.navigate(Screen.Settings.route)
-                }
-            )
-        }
-
-        composable(Destinations.SETTINGS) {
-            SettingsScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onNavigateToChangePassword = {
-                    navController.navigate(Screen.ChangePassword.route)
-                },
-                viewModel = settingsViewModel
-            )
-        }
-
-        composable(Destinations.CHANGE_PASSWORD) {
-            ChangePasswordScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                }
+                settingsViewModel = settingsViewModel,
+                onLogout = { navController.navigate(Destinations.WELCOME) {
+                    popUpTo(0) { inclusive = true }
+                }},
+                rootNavController = navController
             )
         }
 

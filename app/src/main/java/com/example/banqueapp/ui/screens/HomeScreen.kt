@@ -34,103 +34,75 @@ fun HomeScreen(
     userViewModel: UserViewModel? = null,
     onLogout: () -> Unit
 ) {
-    var selectedTab by remember { mutableStateOf("home") }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        // En-tête
+        Text(
+            text = "Bonjour, $userName",
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(top = 16.dp)
+        )
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    selected = selectedTab == "account",
-                    onClick = { selectedTab = "account" },
-                    icon = { Icon(Icons.Filled.AccountCircle, contentDescription = "Compte") },
-                    label = { Text("Compte") }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == "home",
-                    onClick = { selectedTab = "home" },
-                    icon = { Icon(Icons.Filled.Home, contentDescription = "Accueil") },
-                    label = { Text("Accueil") }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == "settings",
-                    onClick = { selectedTab = "settings" },
-                    icon = { Icon(Icons.Filled.Settings, contentDescription = "Paramètres") },
-                    label = { Text("Paramètres") }
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Carte solde
+        Card(
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text("Solde du compte", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                Text(
+                    balance,
+                    fontSize = 32.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.headlineMedium
                 )
             }
         }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp)
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = "Historique des transactions 💳",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxHeight(0.75f)
         ) {
-            // En-tête
-            Text(
-                text = "Bonjour, $userName",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Carte solde
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+            items(transactions) { transaction ->
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(2.dp)
                 ) {
-                    Text("Solde du compte", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
-                    Text(
-                        balance,
-                        fontSize = 32.sp,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.headlineMedium
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = "Historique des transactions 💳",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxHeight(0.75f)
-            ) {
-                items(transactions) { transaction ->
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
+                    Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        elevation = CardDefaults.cardElevation(2.dp)
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(12.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column {
-                                Text(transaction.description, fontSize = 16.sp)
-                                Text(transaction.date, fontSize = 12.sp, color = Color.Gray)
-                            }
-                            Text(
-                                transaction.amount,
-                                fontSize = 16.sp,
-                                color = if (transaction.amount.contains("+")) Color(0xFF2E7D32) else Color(0xFFC62828)
-                            )
+                        Column {
+                            Text(transaction.description, fontSize = 16.sp)
+                            Text(transaction.date, fontSize = 12.sp, color = Color.Gray)
                         }
+                        Text(
+                            transaction.amount,
+                            fontSize = 16.sp,
+                            color = if (transaction.amount.contains("+")) Color(0xFF2E7D32) else Color(0xFFC62828)
+                        )
                     }
                 }
             }
