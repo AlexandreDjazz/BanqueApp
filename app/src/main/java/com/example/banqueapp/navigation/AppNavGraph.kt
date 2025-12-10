@@ -1,21 +1,23 @@
-package com.example.banqueapp.ui.navigation
+package com.example.banqueapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.banqueapp.navigation.Screen
 import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.LoginScreen
 import com.example.banqueapp.ui.screens.PinScreen
 import com.example.banqueapp.ui.screens.SignInScreen
 import com.example.banqueapp.ui.screens.WelcomeScreen
+import com.example.banqueapp.ui.screens.profile.ProfileScreen
+import com.example.banqueapp.ui.screens.settings.SettingsScreen
+import com.example.banqueapp.ui.screens.settings.SettingsViewModel
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
-fun AppNavGraph(userViewModel: UserViewModel) {
+fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewModel) {
     val navController = rememberNavController()
 
     NavHost(
@@ -69,6 +71,35 @@ fun AppNavGraph(userViewModel: UserViewModel) {
                 onLogout = { navController.navigate(Destinations.WELCOME) }
             )
         }
+
+        composable(Destinations.PROFILE) {
+            ProfileScreen(
+                onNavigateToSettings = {
+                    navController.navigate(Screen.Settings.route)
+                }
+            )
+        }
+
+        composable(Destinations.SETTINGS) {
+            SettingsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToChangePassword = {
+                    navController.navigate(Screen.ChangePassword.route)
+                },
+                viewModel = settingsViewModel
+            )
+        }
+
+        composable(Destinations.CHANGE_PASSWORD) {
+            ChangePasswordScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
     }
 }
 
