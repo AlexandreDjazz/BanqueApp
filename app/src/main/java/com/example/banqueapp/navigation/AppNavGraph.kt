@@ -12,6 +12,9 @@ import com.example.banqueapp.ui.screens.auth.LoginScreen
 import com.example.banqueapp.ui.screens.auth.PinScreen
 import com.example.banqueapp.ui.screens.auth.SignInScreen
 import com.example.banqueapp.ui.screens.auth.WelcomeScreen
+import com.example.banqueapp.ui.screens.map.MapScreen
+import com.example.banqueapp.ui.screens.profile.ProfileScreen
+import com.example.banqueapp.ui.screens.settings.SettingsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
@@ -84,14 +87,40 @@ fun AppNavGraph(
         composable(Destinations.HOME) {
             HomeScreen(
                 userViewModel = userViewModel,
-                settingsViewModel = settingsViewModel,
                 transactionViewModel = transactionViewModel,
-                onLogout = { navController.navigate(Destinations.WELCOME) {
-                    popUpTo(0) { inclusive = true }
-                }},
-                rootNavController = navController
+                onProfile = { navController.navigate(Destinations.PROFILE) },
+                onHome = { navController.navigate(Destinations.HOME) },
+                onSettings = { navController.navigate(Destinations.SETTINGS) },
+                onLogout = {
+                    navController.navigate(Destinations.WELCOME) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+                rootNavController = navController,
             )
         }
+
+        composable(Destinations.MAP) {
+            MapScreen(
+                onNavigateBack = {  navController.navigate(Destinations.HOME) }
+            )
+        }
+
+        composable(Destinations.SETTINGS) {
+            SettingsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToChangePassword = {},
+                viewModel = settingsViewModel
+            )
+        }
+
+        composable(Destinations.PROFILE) {
+            ProfileScreen(
+                onNavigateToSettings = { navController.navigate(Destinations.SETTINGS) },
+                userViewModel = userViewModel
+            )
+        }
+
 
     }
 }
