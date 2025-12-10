@@ -21,7 +21,6 @@ class MainActivity : ComponentActivity() {
         val userRepository = UserRepositoryImpl(db.userDao())
 
         userViewModel = UserViewModel(userRepository)
-
         setContent {
             BanqueAppTheme {
                 AppNavGraph(userViewModel = userViewModel)
