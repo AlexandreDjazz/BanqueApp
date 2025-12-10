@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.settings
+package com.example.banqueapp.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

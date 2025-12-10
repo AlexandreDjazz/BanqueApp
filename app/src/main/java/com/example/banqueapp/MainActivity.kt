@@ -12,15 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.ui.screens.settings.SettingsViewModel
-import com.example.banqueapp.ui.screens.settings.ThemeMode
+import com.example.banqueapp.data.repository.TransactionRepositoryImpl
+import com.example.banqueapp.domain.repository.TransactionRepository
+import com.example.banqueapp.viewModels.SettingsViewModel
+import com.example.banqueapp.viewModels.ThemeMode
 import com.example.banqueapp.ui.theme.BanqueAppTheme
+import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserViewModel
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var userViewModel: UserViewModel
+    private lateinit var transactionViewModel: TransactionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,18 +31,30 @@ class MainActivity : ComponentActivity() {
         val db = DatabaseProvider.getDatabase(applicationContext)
 
         val userRepository = UserRepositoryImpl(db.userDao())
+        val transactionRepository = TransactionRepositoryImpl(db.transactionDao())
         val dataStoreManager = DataStoreManager(applicationContext)
 
+
+
         userViewModel = UserViewModel(userRepository, dataStoreManager)
+        transactionViewModel = TransactionViewModel(transactionRepository)
+
         setContent {
-            BanqueApp(userViewModel = userViewModel)
+            BanqueApp(
+                userViewModel = userViewModel,
+                transactionViewModel = transactionViewModel
+            )
         }
     }
 }
 
 @Composable
-fun BanqueApp(userViewModel: UserViewModel) {
+fun BanqueApp(
+    userViewModel: UserViewModel,
+    transactionViewModel: TransactionViewModel
+) {
     val settingsViewModel: SettingsViewModel = viewModel()
+
     val uiState by settingsViewModel.uiState.collectAsState()
     val systemInDarkTheme = isSystemInDarkTheme()
 
@@ -50,9 +65,12 @@ fun BanqueApp(userViewModel: UserViewModel) {
     }
 
     BanqueAppTheme(darkTheme = darkTheme) {
+
         AppNavGraph(
             userViewModel = userViewModel,
-            settingsViewModel = settingsViewModel
+            settingsViewModel = settingsViewModel,
+            transactionViewModel = transactionViewModel
+
         )
     }
 }

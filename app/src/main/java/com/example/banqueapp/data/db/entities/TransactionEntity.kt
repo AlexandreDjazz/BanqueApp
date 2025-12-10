@@ -3,12 +3,11 @@ package com.example.banqueapp.data.db.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "users")
-data class UserEntity(
+@Entity(tableName = "transactions")
+data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val name: String,
-    val email: String,
-    val password: String,
-    val pin: String? = null
+    val userId: Int,
+    val title: String,
+    val amount: Double,
+    val date: Long
 )
-

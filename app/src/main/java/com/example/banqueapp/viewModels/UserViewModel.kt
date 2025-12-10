@@ -28,7 +28,7 @@ class UserViewModel(
     val uiState: StateFlow<UserUiState> = _uiState.asStateFlow()
 
     init {
-        // Collect non-bloquant avec lifecycle awareness
+
         dataStoreManager.currentUserFlow
             .onEach { user ->
                 if (user != null) {
@@ -45,7 +45,7 @@ class UserViewModel(
             .launchIn(viewModelScope)
     }
 
-    // Validation (utilitaires, OK dans ViewModel pour cas simple)
+
     fun isValidEmail(email: String): Boolean {
         val emailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}".toRegex()
         return emailRegex.matches(email)

@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.map
+package com.example.banqueapp.viewModels
 
 import android.Manifest
 import android.content.Context
