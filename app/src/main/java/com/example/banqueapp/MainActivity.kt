@@ -3,6 +3,7 @@ package com.example.banqueapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.banqueapp.data.datastore.DataStoreManager
 import com.example.banqueapp.data.db.DatabaseProvider
 import com.example.banqueapp.data.repository.UserRepositoryImpl
 import com.example.banqueapp.ui.navigation.AppNavGraph
@@ -19,8 +20,9 @@ class MainActivity : ComponentActivity() {
         val db = DatabaseProvider.getDatabase(applicationContext)
 
         val userRepository = UserRepositoryImpl(db.userDao())
+        val dataStoreManager = DataStoreManager(applicationContext)
 
-        userViewModel = UserViewModel(userRepository)
+        userViewModel = UserViewModel(userRepository, dataStoreManager)
         setContent {
             BanqueAppTheme {
                 AppNavGraph(userViewModel = userViewModel)

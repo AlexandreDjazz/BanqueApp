@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.banqueapp.viewModels.UserViewModel
 
 data class Transaction(
     val id: Int,
@@ -26,6 +27,7 @@ fun HomeScreen(
     userName: String = "",
     balance: String = "0,00 €",
     transactions: List<Transaction> = emptyList(),
+    userViewModel: UserViewModel? = null,
     onLogout: () -> Unit
 ) {
     Column(
@@ -83,7 +85,9 @@ fun HomeScreen(
             }
 
         }
-        Button(onClick = onLogout) {
+        Button(onClick = {
+            userViewModel?.logout { onLogout() }
+        }) {
             Text("Déconnexion")
         }
     }

@@ -1,6 +1,9 @@
 package com.example.banqueapp.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,6 +24,15 @@ fun AppNavGraph(userViewModel: UserViewModel) {
     ) {
 
         composable(Destinations.WELCOME) {
+
+            val isLogged = userViewModel.isLogged()
+
+            LaunchedEffect(isLogged) {
+                if (isLogged) {
+                    navController.navigate(Destinations.PIN)
+                }
+            }
+
             WelcomeScreen(
                 onLoginClick = { navController.navigate(Destinations.LOGIN) },
                 onSignInClick = { navController.navigate(Destinations.SIGNIN) }
@@ -53,6 +65,7 @@ fun AppNavGraph(userViewModel: UserViewModel) {
 
         composable(Destinations.HOME) {
             HomeScreen(
+                userViewModel = userViewModel,
                 onLogout = { navController.navigate(Destinations.WELCOME) }
             )
         }

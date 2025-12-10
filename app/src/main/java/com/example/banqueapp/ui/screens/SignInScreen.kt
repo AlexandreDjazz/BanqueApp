@@ -1,10 +1,12 @@
 package com.example.banqueapp.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +23,7 @@ fun SignInScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var pin by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -64,8 +67,13 @@ fun SignInScreen(
             )
 
             Button(onClick = {
-                userViewModel?.signUp(name, email, password, pin) { success ->
-                    if (success) onSignInSuccess()
+                userViewModel?.signUp(name, email, password, pin) { success, message ->
+                    if (success) {
+                        Toast.makeText(context, "Inscription réussie", Toast.LENGTH_SHORT).show()
+                        onSignInSuccess()
+                    } else {
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }) {
                 Text("S'inscrire")
