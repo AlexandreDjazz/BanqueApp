@@ -72,7 +72,7 @@ private fun ProfileContent(
             ProfileInfoItem(
                 icon = Icons.Default.Person,
                 label = "Nom complet",
-                value = user.name  // ← Directement depuis User
+                value = user.name
             )
 
             ProfileInfoItem(
@@ -101,7 +101,7 @@ private fun ProfileContent(
             ProfileActionButton(
                 icon = Icons.Default.Settings,
                 text = "Paramètres",
-                onClick = onNavigateToSettings  // ← Fonctionne déjà
+                onClick = onNavigateToSettings
             )
 
             ProfileActionButton(
@@ -113,7 +113,7 @@ private fun ProfileContent(
             ProfileActionButton(
                 icon = Icons.Default.ExitToApp,
                 text = "Se déconnecter",
-                onClick = { userViewModel.onLogout() },  // ✅ Utilise UserViewModel
+                onClick = { userViewModel.onLogout() },
                 isDestructive = true
             )
         }
