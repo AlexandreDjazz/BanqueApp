@@ -39,8 +39,8 @@ fun MainOverlay(
     val currentDestination = navBackStackEntry?.destination
 
     val bottomNavItems = listOf(
-        BottomNavItem(Destinations.HOME, Icons.Default.Home, "Accueil"),
         BottomNavItem(Destinations.PROFILE, Icons.Default.AccountCircle, "Profil"),
+        BottomNavItem(Destinations.HOME, Icons.Default.Home, "Accueil"),
         BottomNavItem(Destinations.SETTINGS, Icons.Default.Settings, "Paramètres")
     )
 
@@ -76,15 +76,15 @@ fun MainOverlay(
         ) {
             composable(Destinations.HOME) {
                 HomeScreen(
-                    userViewModel = userViewModel,
-                    onLogout = onLogout
+                    userViewModel = userViewModel
                 )
             }
             composable(Destinations.PROFILE) {
                 ProfileScreen(
                     onNavigateToSettings = {
                         bottomNavController.navigate(Destinations.SETTINGS)
-                    }
+                    },
+                    userViewModel = userViewModel
                 )
             }
             composable(Destinations.SETTINGS) {

@@ -1,13 +1,8 @@
 package com.example.banqueapp.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,8 +26,7 @@ fun HomeScreen(
     userName: String = "",
     balance: String = "0,00 €",
     transactions: List<Transaction> = emptyList(),
-    userViewModel: UserViewModel? = null,
-    onLogout: () -> Unit
+    userViewModel: UserViewModel? = null
 ) {
     Column(
         modifier = modifier
@@ -123,7 +117,6 @@ fun BankHomeScreenPreview() {
     HomeScreen(
         userName = "Alice Dupont",
         balance = "1992,81 €",
-        transactions = sampleTransactions,
-        onLogout = {}
+        transactions = sampleTransactions
     )
 }

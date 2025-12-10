@@ -15,12 +15,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.banqueapp.viewModels.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = viewModel(),
+    userViewModel: UserViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
@@ -28,15 +30,7 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mon Profil") },
-                actions = {
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "Paramètres"
-                        )
-                    }
-                }
+                title = { Text("Mon Profil") }
             )
         }
     ) { paddingValues ->
@@ -104,15 +98,13 @@ fun ProfileScreen(
                 text = "Aide et support",
                 onClick = {  }
             )
-            //manque action
+
             ProfileActionButton(
                 icon = Icons.Default.ExitToApp,
                 text = "Se déconnecter",
-                onClick = {  },
+                onClick = { userViewModel.logout() },
                 isDestructive = true
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

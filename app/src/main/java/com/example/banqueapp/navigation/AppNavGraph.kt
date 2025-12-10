@@ -65,7 +65,7 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
                 onBack = { navController.popBackStack() }
             )
         }
-        
+
         composable(Destinations.HOME) {
             MainOverlay(
                 userViewModel = userViewModel,
