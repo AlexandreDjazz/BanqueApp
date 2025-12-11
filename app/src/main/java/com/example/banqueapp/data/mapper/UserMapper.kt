@@ -9,8 +9,9 @@ object UserMapper {
             id = entity.id,
             name = entity.name,
             email = entity.email,
+            phone = entity.phone,
             password = entity.password,
-            pin = entity.pin
+            pin = entity.pin,
         )
     }
 
@@ -19,6 +20,7 @@ object UserMapper {
             id = user.id,
             name = user.name,
             email = user.email,
+            phone = user.phone,
             password = user.password,
             pin = user.pin
         )

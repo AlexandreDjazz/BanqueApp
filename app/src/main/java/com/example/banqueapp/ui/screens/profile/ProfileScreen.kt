@@ -82,11 +82,10 @@ private fun ProfileContent(
                 value = user.email
             )
 
-            // Phone manquant dans User → à ajouter en DB ou placeholder
             ProfileInfoItem(
                 icon = Icons.Default.Phone,
                 label = "Téléphone",
-                value = "Non renseigné"  // ou ajoute phone à UserEntity
+                value = user.phone
             )
 
             Spacer(modifier = Modifier.height(24.dp))
