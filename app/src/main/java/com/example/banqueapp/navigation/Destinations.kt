@@ -9,5 +9,6 @@ object Destinations {
 
     const val PROFILE = "profile"
     const val SETTINGS = "settings"
+    const val MAP = "map"
     const val CHANGE_PASSWORD = "change_password"
 }
