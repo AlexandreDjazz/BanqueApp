@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.settings
+package com.example.banqueapp.ui.screens.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.ThemeMode
@@ -105,7 +106,7 @@ fun SettingsSection(title: String) {
 
 @Composable
 fun SettingsItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     subtitle: String,
     onClick: () -> Unit
@@ -145,7 +146,7 @@ fun SettingsItem(
 
 @Composable
 fun SettingsSwitchItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     subtitle: String,
     checked: Boolean,

@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.map
+package com.example.banqueapp.ui.screens.menu
 
 import android.Manifest
 import androidx.compose.foundation.background

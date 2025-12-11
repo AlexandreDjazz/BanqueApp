@@ -10,10 +10,10 @@ import androidx.navigation.compose.NavHost
 import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.debug.DebugMenuScreen
 import com.example.banqueapp.ui.screens.debug.TransactionDebugScreen
-import com.example.banqueapp.ui.screens.map.MapScreen
+import com.example.banqueapp.ui.screens.menu.MapScreen
 import com.example.banqueapp.ui.screens.menu.SubMenuScreen
 import com.example.banqueapp.ui.screens.profile.ProfileScreen
-import com.example.banqueapp.ui.screens.settings.SettingsScreen
+import com.example.banqueapp.ui.screens.profile.SettingsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserViewModel
