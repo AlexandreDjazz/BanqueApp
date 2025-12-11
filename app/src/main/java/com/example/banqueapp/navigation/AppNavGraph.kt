@@ -87,9 +87,9 @@ fun AppNavGraph(
                 settingsViewModel = settingsViewModel,
                 transactionViewModel = transactionViewModel,
                 onLogout = { navController.navigate(Destinations.WELCOME) {
+                    userViewModel.onLogout()
                     popUpTo(0) { inclusive = true }
                 }},
-                rootNavController = navController
             )
         }
     }

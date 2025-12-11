@@ -23,7 +23,8 @@ import com.example.banqueapp.viewModels.UserViewModel
 @Composable
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    onLogout: () -> Unit
 ) {
     val uiState by userViewModel.uiState.collectAsState()
 
@@ -34,8 +35,8 @@ fun ProfileScreen(
         is UserUiState.LoggedIn -> {
             ProfileContent(
                 user = currentState.user,
-                userViewModel = userViewModel,
-                onNavigateToSettings = onNavigateToSettings
+                onNavigateToSettings = onNavigateToSettings,
+                onLogout = onLogout
             )
         }
     }
@@ -45,7 +46,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileContent(
     user: User,
-    userViewModel: UserViewModel,
+    onLogout: () -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -113,7 +114,7 @@ private fun ProfileContent(
             ProfileActionButton(
                 icon = Icons.Default.ExitToApp,
                 text = "Se déconnecter",
-                onClick = { userViewModel.onLogout() },
+                onClick = onLogout,
                 isDestructive = true
             )
         }

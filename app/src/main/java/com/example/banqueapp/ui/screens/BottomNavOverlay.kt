@@ -48,8 +48,7 @@ fun BottomNavOverlay(
     userViewModel: UserViewModel,
     settingsViewModel: SettingsViewModel,
     transactionViewModel: TransactionViewModel,
-    onLogout: () -> Unit,
-    rootNavController: NavHostController
+    onLogout: () -> Unit
 ) {
     val bottomNavController = rememberNavController()
     val navBackStackEntry by bottomNavController.currentBackStackEntryAsState()
@@ -82,7 +81,8 @@ fun BottomNavOverlay(
             userViewModel = userViewModel,
             settingsViewModel = settingsViewModel,
             transactionViewModel = transactionViewModel,
-            innerPadding = innerPadding
+            innerPadding = innerPadding,
+            onLogout = onLogout
         )
     }
 }

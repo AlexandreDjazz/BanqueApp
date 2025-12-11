@@ -22,7 +22,8 @@ fun BottomNavGraph(
     userViewModel: UserViewModel,
     settingsViewModel: SettingsViewModel,
     transactionViewModel: TransactionViewModel,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    onLogout: () -> Unit
 ) {
     NavHost(
         navController = bottomNavController,
@@ -41,6 +42,7 @@ fun BottomNavGraph(
                 onNavigateToSettings = {
                     bottomNavController.navigate(Destinations.SETTINGS)
                 },
+                onLogout = onLogout,
                 userViewModel = userViewModel
             )
         }
