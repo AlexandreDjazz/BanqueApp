@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.debug.DebugMenuScreen
+import com.example.banqueapp.ui.screens.debug.TransactionDebugScreen
 import com.example.banqueapp.ui.screens.map.MapScreen
 import com.example.banqueapp.ui.screens.menu.SubMenuScreen
 import com.example.banqueapp.ui.screens.profile.ProfileScreen
@@ -83,6 +84,12 @@ fun BottomNavGraph(
             )
         }
 
-        
+        composable(DebugMenuDestinations.TRANSACTION) {
+            TransactionDebugScreen(
+                transactionViewModel = transactionViewModel,
+                userViewModel = userViewModel,
+                onBack = { bottomNavController.navigateUp() }
+            )
+        }
     }
 }
