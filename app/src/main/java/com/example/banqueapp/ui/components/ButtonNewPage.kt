@@ -14,13 +14,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.banqueapp.ui.components.text.SubTitleTextComponent
+import com.example.banqueapp.ui.components.text.TitleTextComponent
 
 
 @Composable
@@ -33,7 +33,8 @@ fun ButtonNewPage(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth()
+            .padding(horizontal = 24.dp),
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
@@ -51,16 +52,8 @@ fun ButtonNewPage(
                 tint = MaterialTheme.colorScheme.primary
             )
             Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                TitleTextComponent(title)
+                SubTitleTextComponent(subtitle)
             }
             Spacer(Modifier.weight(1f))
             Icon(

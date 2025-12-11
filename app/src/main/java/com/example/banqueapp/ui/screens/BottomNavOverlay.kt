@@ -74,6 +74,7 @@ fun BottomNavOverlay(
             )
         },
         contentWindowInsets = WindowInsets(0),
+        modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
     ) { innerPadding ->
 
         BottomNavGraph(

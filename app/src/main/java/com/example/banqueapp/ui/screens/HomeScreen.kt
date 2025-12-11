@@ -14,18 +14,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.banqueapp.domain.models.Transaction
 import com.example.banqueapp.domain.models.User
 import com.example.banqueapp.ui.components.TransactionItem
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
+import com.example.banqueapp.ui.theme.BanqueAppTheme
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
@@ -71,23 +73,10 @@ private fun HomeContent(
     balance: String,
     transactionViewModel: TransactionViewModel,
 ) {
-    var reloading: Int = 0
     val transactions by transactionViewModel.transactions.collectAsState()
 
-    LaunchedEffect(reloading) {
+    LaunchedEffect(user.id) {
         transactionViewModel.loadTransactions(user.id)
-    }
-
-    val addTransaction = remember(user.id) {
-        reloading += 1
-        {
-            val isAdd = Random.nextBoolean()
-            transactionViewModel.addTransaction(
-                userId = user.id,
-                title = "Dépôt",
-                amount = if(isAdd) 100.0 else -100.0
-            )
-        }
     }
 
     Column(
@@ -187,57 +176,6 @@ private fun HomeContent(
                         )
                     }
                 }
-            }
-
-            Button(
-                onClick = addTransaction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
-                Text("Ajouter transaction")
-            }
-        }
-    }
-}
-
-@Composable
-private fun ActionCard(
-    icon: ImageVector,
-    title: String,
-    subtitle: String,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = Modifier
-            .height(80.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(28.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
         }
     }
