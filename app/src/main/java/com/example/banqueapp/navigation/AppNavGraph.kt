@@ -61,7 +61,7 @@ fun AppNavGraph(
             composable(Destinations.SIGNIN) {
                 SignInScreen(
                     userViewModel = userViewModel,
-                    onSignInSuccess = { navController.navigate(Destinations.WELCOME) },
+                    onSignInSuccess = { navController.navigate(Destinations.LOGIN) },
                     onBack = { navController.popBackStack() }
                 )
             }
