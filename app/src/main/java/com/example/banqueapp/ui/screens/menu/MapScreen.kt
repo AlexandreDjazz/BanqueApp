@@ -157,7 +157,7 @@ private fun MapContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.6f)
+                .fillMaxHeight(0.8f)
         ) {
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
@@ -215,7 +215,7 @@ private fun ATMListSection(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.4f),
+            .fillMaxHeight(1f),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {

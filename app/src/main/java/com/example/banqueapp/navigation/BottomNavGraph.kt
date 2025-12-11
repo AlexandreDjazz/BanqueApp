@@ -66,7 +66,8 @@ fun BottomNavGraph(
 
         composable(SubMenuDestinations.MAP) {
             MapScreen(
-                onNavigateBack = { bottomNavController.navigateUp() }
+                onNavigateBack = { bottomNavController.navigateUp() },
+                showBackButton = true
             )
         }
 
