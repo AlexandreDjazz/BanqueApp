@@ -11,7 +11,8 @@ object TransactionMapper {
             userId = entity.userId,
             title = entity.title,
             amount = entity.amount,
-            date = entity.date
+            date = entity.date,
+            type = entity.type
         )
     }
 
@@ -21,7 +22,8 @@ object TransactionMapper {
             userId = transaction.userId,
             title = transaction.title,
             amount = transaction.amount,
-            date = transaction.date
+            date = transaction.date,
+            type = transaction.type
         )
     }
 }

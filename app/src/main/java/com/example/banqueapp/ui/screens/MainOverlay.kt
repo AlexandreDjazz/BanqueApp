@@ -74,7 +74,9 @@ fun MainOverlay(
                     }
                 }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0),
+        containerColor = Color.Transparent
     ) { innerPadding ->
         NavHost(
             navController = bottomNavController,
@@ -115,8 +117,8 @@ fun CustomBottomBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .background(Color.Transparent),
+            .padding(bottom = 20.dp)
+            .background(Color.Transparent)
     ) {
         Row(
             modifier = Modifier
@@ -162,6 +164,29 @@ fun CustomBottomBar(
                     }
                 }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CustomBottomBarPreview() {
+    val items = listOf(
+        BottomNavItem("profile", Icons.Default.AccountCircle, "Profil"),
+        BottomNavItem("home", Icons.Default.Home, "Accueil"),
+        BottomNavItem("settings", Icons.Default.Settings, "Paramètres")
+    )
+
+    BanqueAppTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color.White
+        ) {
+            CustomBottomBar(
+                items = items,
+                currentDestinationRoute = "home",  // Pour voir l'effet selected
+                onItemClick = {}
+            )
         }
     }
 }

@@ -42,7 +42,6 @@ fun AppNavGraph(
                     navController.navigate(Destinations.PIN) {
                         popUpTo(Destinations.WELCOME) { inclusive = true }
                     }
-                    transactionViewModel.loadTransactions((uiState as UserUiState.LoggedIn).user.id)
                 }
             }
 

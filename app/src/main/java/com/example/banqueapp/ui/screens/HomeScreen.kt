@@ -29,6 +29,7 @@ import com.example.banqueapp.ui.screens.utils.ErrorScreen
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
+import kotlin.random.Random
 
 
 @Composable
@@ -70,14 +71,21 @@ private fun HomeContent(
     balance: String,
     transactionViewModel: TransactionViewModel,
 ) {
+    var reloading: Int = 0
     val transactions by transactionViewModel.transactions.collectAsState()
 
+    LaunchedEffect(reloading) {
+        transactionViewModel.loadTransactions(user.id)
+    }
+
     val addTransaction = remember(user.id) {
+        reloading += 1
         {
+            val isAdd = Random.nextBoolean()
             transactionViewModel.addTransaction(
                 userId = user.id,
                 title = "Dépôt",
-                amount = 100.0
+                amount = if(isAdd) 100.0 else -100.0
             )
         }
     }
@@ -87,7 +95,6 @@ private fun HomeContent(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Header personnalisé
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -110,7 +117,6 @@ private fun HomeContent(
             )
         }
 
-        // Carte solde principale - Design amélioré
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -175,7 +181,9 @@ private fun HomeContent(
                     items(transactions.take(5)) { transaction ->
                         TransactionItem(
                             transaction = transaction,
-                            onDelete = {}
+                            onDelete = {
+                                transactionViewModel.deleteTransaction(transaction.id, transaction.userId)
+                            }
                         )
                     }
                 }
