@@ -19,14 +19,12 @@ class DataStoreManager(private val context: Context) {
                 throw e
             }
             .map { prefs ->
-                val isLoggedIn = prefs[UserPreferences.IS_LOGGED_IN] ?: false
-                if (!isLoggedIn) null
-                else CurrentUser(
+                CurrentUser(
                     id = prefs[UserPreferences.USER_ID] ?: 0
                 )
             }
 
-    suspend fun saveUser(id: Int, name: String, email: String) {
+    suspend fun saveUser(id: Int) {
         context.dataStore.edit { prefs ->
             prefs[UserPreferences.USER_ID] = id
         }

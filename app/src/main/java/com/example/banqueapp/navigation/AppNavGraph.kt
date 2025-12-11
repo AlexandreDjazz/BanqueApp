@@ -7,15 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.ui.screens.HomeScreen
-import com.example.banqueapp.ui.screens.MainOverlay
+import com.example.banqueapp.ui.screens.BottomNavOverlay
 import com.example.banqueapp.ui.screens.auth.LoginScreen
 import com.example.banqueapp.ui.screens.auth.PinScreen
 import com.example.banqueapp.ui.screens.auth.SignInScreen
 import com.example.banqueapp.ui.screens.auth.WelcomeScreen
-import com.example.banqueapp.ui.screens.map.MapScreen
-import com.example.banqueapp.ui.screens.profile.ProfileScreen
-import com.example.banqueapp.ui.screens.settings.SettingsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
@@ -86,17 +82,16 @@ fun AppNavGraph(
         }
 
         composable(Destinations.HOME) {
-            MainOverlay(
+            BottomNavOverlay(
                 userViewModel = userViewModel,
                 settingsViewModel = settingsViewModel,
                 transactionViewModel = transactionViewModel,
                 onLogout = { navController.navigate(Destinations.WELCOME) {
+                    userViewModel.onLogout()
                     popUpTo(0) { inclusive = true }
                 }},
-                rootNavController = navController
             )
         }
-
     }
 }
 

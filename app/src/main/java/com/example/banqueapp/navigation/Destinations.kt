@@ -8,8 +8,8 @@ object Destinations {
     const val HOME = "home"
 
     const val PROFILE = "profile"
-    const val SETTINGS = "settings"
-    const val MAP = "map"
 
-    const val SUB_MENU = "sub_menu"
+    const val SETTINGS = "settings"
+
+    const val SUB_MENU = "submenu"
 }
