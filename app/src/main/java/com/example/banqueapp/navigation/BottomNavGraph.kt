@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.banqueapp.ui.screens.HomeScreen
+import com.example.banqueapp.ui.screens.map.MapScreen
+import com.example.banqueapp.ui.screens.menu.SubMenuScreen
 import com.example.banqueapp.ui.screens.profile.ProfileScreen
 import com.example.banqueapp.ui.screens.settings.SettingsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
@@ -43,15 +45,24 @@ fun BottomNavGraph(
             )
         }
 
-        composable(Destinations.SUB_MENU) {
-            SubMenuNavGraph(navController = bottomNavController)
-        }
 
         composable(Destinations.SETTINGS) {
             SettingsScreen(
                 onNavigateBack = { bottomNavController.popBackStack() },
                 onNavigateToChangePassword = {},
                 viewModel = settingsViewModel
+            )
+        }
+
+        composable(Destinations.SUB_MENU) {
+            SubMenuScreen(
+                navController = bottomNavController,
+            )
+        }
+
+        composable(SubMenuDestinations.MAP) {
+            MapScreen(
+                onNavigateBack = { bottomNavController.navigateUp() }
             )
         }
     }
