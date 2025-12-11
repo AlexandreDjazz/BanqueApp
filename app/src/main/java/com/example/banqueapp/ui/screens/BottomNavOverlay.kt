@@ -75,7 +75,6 @@ fun BottomNavOverlay(
             )
         },
         contentWindowInsets = WindowInsets(0),
-        containerColor = Color.Transparent
     ) { innerPadding ->
 
         BottomNavGraph(
@@ -96,8 +95,7 @@ fun CustomBottomBar(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 20.dp)
+            .padding(bottom = 23.dp)
             .background(Color.Transparent)
     ) {
         Row(
@@ -152,9 +150,9 @@ fun CustomBottomBar(
 @Composable
 fun CustomBottomBarPreview() {
     val items = listOf(
-        BottomNavItem("profile", Icons.Default.AccountCircle, "Profil"),
-        BottomNavItem("home", Icons.Default.Home, "Accueil"),
-        BottomNavItem("settings", Icons.Default.Settings, "Paramètres")
+        BottomNavItem(Destinations.PROFILE, Icons.Default.AccountCircle, "Profil"),
+        BottomNavItem(Destinations.HOME, Icons.Default.Home, "Accueil"),
+        BottomNavItem(Destinations.SETTINGS, Icons.Default.Settings, "Paramètres")
     )
 
     BanqueAppTheme {
@@ -164,7 +162,7 @@ fun CustomBottomBarPreview() {
         ) {
             CustomBottomBar(
                 items = items,
-                currentDestinationRoute = "home",  // Pour voir l'effet selected
+                currentDestinationRoute = Destinations.HOME,  // Pour voir l'effet selected
                 onItemClick = {}
             )
         }
