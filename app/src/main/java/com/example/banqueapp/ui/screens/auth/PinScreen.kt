@@ -25,7 +25,6 @@ fun PinScreen(
     var pin by remember { mutableStateOf("") }
     val maxPinLength = 6
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +42,12 @@ fun PinScreen(
                     modifier = Modifier
                         .size(24.dp)
                         .clip(CircleShape)
-                        .background(if (index < pin.length) Color.Black else Color.Gray)
+                        .background(
+                            if (index < pin.length)
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.outlineVariant
+                        )
                 )
             }
         }
@@ -62,7 +66,7 @@ fun PinScreen(
             }
             Button(
                 onClick = {
-                    if (userViewModel?.checkPin(pin) == true) {
+                    if (userViewModel.checkPin(pin)) {
                         onPinSuccess()
                     } else {
                         pin = ""
