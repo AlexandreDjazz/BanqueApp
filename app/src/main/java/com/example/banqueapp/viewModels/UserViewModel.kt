@@ -59,6 +59,7 @@ class UserViewModel(
     fun onSignUp(
         name: String,
         email: String,
+        phone: String,
         password: String,
         pin: String,
         onResult: ((Boolean, String?) -> Unit)
@@ -78,7 +79,7 @@ class UserViewModel(
             }
 
             try {
-                val user = User(id = 0, name = name, email = email, password = password, pin = pin)
+                val user = User(id = 0, name = name, email = email, phone = phone, password = password, pin = pin)
                 userRepository.addUser(user)
                 _uiState.value = UserUiState.LoggedOut
                 onResult.invoke(true, null)
