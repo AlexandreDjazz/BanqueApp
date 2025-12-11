@@ -7,17 +7,26 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.MainOverlay
 import com.example.banqueapp.ui.screens.auth.LoginScreen
 import com.example.banqueapp.ui.screens.auth.PinScreen
 import com.example.banqueapp.ui.screens.auth.SignInScreen
 import com.example.banqueapp.ui.screens.auth.WelcomeScreen
-import com.example.banqueapp.ui.screens.settings.SettingsViewModel
+import com.example.banqueapp.ui.screens.map.MapScreen
+import com.example.banqueapp.ui.screens.profile.ProfileScreen
+import com.example.banqueapp.ui.screens.settings.SettingsScreen
+import com.example.banqueapp.viewModels.SettingsViewModel
+import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
-fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewModel) {
+fun AppNavGraph(
+    userViewModel: UserViewModel,
+    settingsViewModel: SettingsViewModel,
+    transactionViewModel: TransactionViewModel
+) {
     val navController = rememberNavController()
 
     NavHost(
@@ -33,6 +42,7 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
                     navController.navigate(Destinations.PIN) {
                         popUpTo(Destinations.WELCOME) { inclusive = true }
                     }
+                    transactionViewModel.loadTransactions((uiState as UserUiState.LoggedIn).user.id)
                 }
             }
 
@@ -80,6 +90,7 @@ fun AppNavGraph(userViewModel: UserViewModel, settingsViewModel: SettingsViewMod
             MainOverlay(
                 userViewModel = userViewModel,
                 settingsViewModel = settingsViewModel,
+                transactionViewModel = transactionViewModel,
                 onLogout = { navController.navigate(Destinations.WELCOME) {
                     popUpTo(0) { inclusive = true }
                 }},

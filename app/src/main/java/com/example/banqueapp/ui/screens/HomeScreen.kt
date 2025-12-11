@@ -1,6 +1,13 @@
 package com.example.banqueapp.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,27 +20,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.banqueapp.domain.models.Transaction
+import com.example.banqueapp.domain.models.User
+import com.example.banqueapp.ui.components.TransactionItem
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
-import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
+import com.example.banqueapp.viewModels.TransactionViewModel
+import com.example.banqueapp.viewModels.UserUiState
 
-data class Transaction(
-    val id: Int,
-    val description: String,
-    val amount: String,
-    val date: String,
-    val category: String = ""
-)
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     balance: String = "0,00 €",
-    transactions: List<Transaction> = emptyList(),
+    transactionViewModel: TransactionViewModel,
     userViewModel: UserViewModel
 ) {
     val uiState by userViewModel.uiState.collectAsState()
@@ -53,9 +55,9 @@ fun HomeScreen(
         is UserUiState.LoggedIn -> {
             HomeContent(
                 modifier = modifier,
-                userName = currentState.user.name,
+                user = currentState.user,
                 balance = balance,
-                transactions = transactions
+                transactionViewModel= transactionViewModel
             )
         }
     }
@@ -64,10 +66,22 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     modifier: Modifier,
-    userName: String,
+    user: User,
     balance: String,
-    transactions: List<Transaction>
+    transactionViewModel: TransactionViewModel,
 ) {
+    val transactions by transactionViewModel.transactions.collectAsState()
+
+    val addTransaction = remember(user.id) {
+        {
+            transactionViewModel.addTransaction(
+                userId = user.id,
+                title = "Dépôt",
+                amount = 100.0
+            )
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -83,7 +97,7 @@ private fun HomeContent(
         ) {
             Column {
                 Text(
-                    text = userName,
+                    text = user.name,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -135,53 +149,46 @@ private fun HomeContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Quick actions
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            ActionCard(
-                icon = Icons.Default.Info,
-                title = "Carte",
-                subtitle = "Gérer mes cartes",
-                modifier = Modifier.weight(1f)
-            )
-            ActionCard(
-                icon = Icons.Default.Info,
-                title = "Virements",
-                subtitle = "Envoyer de l'argent",
-                modifier = Modifier.weight(1f)
-            )
-        }
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Transactions récentes",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.weight(1f)
+                    )
+                    TextButton(onClick = {}) {
+                        Text("Voir tout")
+                    }
+                }
 
-        Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-        // Transactions récentes
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Transactions récentes",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.weight(1f)
-                )
-                TextButton(onClick = {}) {
-                    Text("Voir tout")
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(transactions.take(5)) { transaction ->
+                        TransactionItem(
+                            transaction = transaction,
+                            onDelete = {}
+                        )
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxSize()
+            Button(
+                onClick = addTransaction,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .align(Alignment.BottomCenter)
             ) {
-                items(transactions) { transaction ->
-                    TransactionItem(transaction = transaction)
-                }
+                Text("Ajouter transaction")
             }
         }
     }
@@ -227,69 +234,3 @@ private fun ActionCard(
         }
     }
 }
-
-@Composable
-private fun TransactionItem(transaction: Transaction) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = transaction.description,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1
-                )
-                Text(
-                    text = transaction.date,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            // Montant avec couleur dynamique
-            val isPositive = transaction.amount.contains("+") || transaction.amount.startsWith("Remb")
-            Text(
-                text = transaction.amount,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (isPositive)
-                    MaterialTheme.colorScheme.tertiary
-                else
-                    MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.End
-            )
-        }
-    }
-}
-
-/*
-@Preview(showBackground = true, widthDp = 360, heightDp = 800)
-@Composable
-fun HomeScreenPreview() {
-    val sampleTransactions = listOf(
-        Transaction(1, "Carrefour Market", "-45,20 €", "Aujourd'hui 14:32"),
-        Transaction(2, "Salaire Octobre", "+2 000,00 €", "25/11/2025 10:15"),
-        Transaction(3, "Netflix Premium", "-12,99 €", "24/11/2025 02:00"),
-        Transaction(4, "Remboursement Amazon", "+50,00 €", "23/11/2025 16:45"),
-        Transaction(5, "McDonald's", "-18,50 €", "22/11/2025 19:20")
-    )
-
-    MaterialTheme {
-        HomeScreen(
-            balance = "1 992,81",
-            transactions = sampleTransactions,
-            userViewModel = null
-        )
-    }
-}
-*/

@@ -33,6 +33,7 @@ import com.example.banqueapp.ui.screens.settings.SettingsScreen
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.navigation.Destinations
 import com.example.banqueapp.viewModels.SettingsViewModel
+import com.example.banqueapp.viewModels.TransactionViewModel
 
 data class BottomNavItem(
     val route: String,
@@ -44,6 +45,7 @@ data class BottomNavItem(
 fun MainOverlay(
     userViewModel: UserViewModel,
     settingsViewModel: SettingsViewModel,
+    transactionViewModel: TransactionViewModel,
     onLogout: () -> Unit,
     rootNavController: NavHostController
 ) {
@@ -80,7 +82,10 @@ fun MainOverlay(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Destinations.HOME) {
-                HomeScreen(userViewModel = userViewModel)
+                HomeScreen(
+                    userViewModel = userViewModel,
+                    transactionViewModel = transactionViewModel
+                )
             }
             composable(Destinations.PROFILE) {
                 ProfileScreen(
