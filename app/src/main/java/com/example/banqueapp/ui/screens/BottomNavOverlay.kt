@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,17 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.banqueapp.ui.screens.profile.ProfileScreen
-import com.example.banqueapp.ui.screens.settings.SettingsScreen
+import com.example.banqueapp.navigation.BottomNavGraph
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.navigation.Destinations
+import com.example.banqueapp.ui.theme.BanqueAppTheme
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 
@@ -42,7 +44,7 @@ data class BottomNavItem(
 )
 
 @Composable
-fun MainOverlay(
+fun BottomNavOverlay(
     userViewModel: UserViewModel,
     settingsViewModel: SettingsViewModel,
     transactionViewModel: TransactionViewModel,
@@ -56,7 +58,7 @@ fun MainOverlay(
     val bottomNavItems = listOf(
         BottomNavItem(Destinations.PROFILE, Icons.Default.AccountCircle, "Profil"),
         BottomNavItem(Destinations.HOME, Icons.Default.Home, "Accueil"),
-        BottomNavItem(Destinations.SETTINGS, Icons.Default.Settings, "Paramètres")
+        BottomNavItem(Destinations.SUB_MENU, Icons.Default.Menu, "Menu")
     )
 
     Scaffold(
@@ -66,11 +68,8 @@ fun MainOverlay(
                 currentDestinationRoute = currentDestination?.route,
                 onItemClick = { route ->
                     bottomNavController.navigate(route) {
-                        popUpTo(bottomNavController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
+                        popUpTo(bottomNavController.graph.findStartDestination().id) {}
                         launchSingleTop = true
-                        restoreState = true
                     }
                 }
             )
@@ -78,33 +77,14 @@ fun MainOverlay(
         contentWindowInsets = WindowInsets(0),
         containerColor = Color.Transparent
     ) { innerPadding ->
-        NavHost(
-            navController = bottomNavController,
-            startDestination = Destinations.HOME,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(Destinations.HOME) {
-                HomeScreen(
-                    userViewModel = userViewModel,
-                    transactionViewModel = transactionViewModel
-                )
-            }
-            composable(Destinations.PROFILE) {
-                ProfileScreen(
-                    onNavigateToSettings = {
-                        bottomNavController.navigate(Destinations.SETTINGS)
-                    },
-                    userViewModel = userViewModel
-                )
-            }
-            composable(Destinations.SETTINGS) {
-                SettingsScreen(
-                    onNavigateBack = { bottomNavController.navigateUp() },
-                    onNavigateToChangePassword = { /* TODO */ },
-                    viewModel = settingsViewModel
-                )
-            }
-        }
+
+        BottomNavGraph(
+            bottomNavController = bottomNavController,
+            userViewModel = userViewModel,
+            settingsViewModel = settingsViewModel,
+            transactionViewModel = transactionViewModel,
+            innerPadding = innerPadding
+        )
     }
 }
 
