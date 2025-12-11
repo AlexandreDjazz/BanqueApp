@@ -94,9 +94,7 @@ fun CustomBottomBar(
     onItemClick: (String) -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .padding(bottom = 23.dp)
-            .background(Color.Transparent)
+        modifier = Modifier.padding(bottom = 23.dp)
     ) {
         Row(
             modifier = Modifier
@@ -104,40 +102,43 @@ fun CustomBottomBar(
                 .height(64.dp)
                 .padding(horizontal = 30.dp)
                 .clip(RoundedCornerShape(32.dp))
-                .background(Color(0xFFE6D3F8)),
+                .background(
+                    MaterialTheme.colorScheme.surfaceVariant
+                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             items.forEach { item ->
                 val isSelected = currentDestinationRoute == item.route
-                val colorSelected = if (isSelected) Color(0xFF4A0CF8) else Color(0xFFAF97FF)
+                val tintColor = if (isSelected)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.onSurfaceVariant
 
                 if (item.route == Destinations.HOME) {
-                    // Central circular button
                     Box(
                         modifier = Modifier
                             .size(56.dp)
                             .clip(CircleShape)
-                            .background(colorSelected),
+                            .background(tintColor),
                         contentAlignment = Alignment.Center
                     ) {
                         IconButton(onClick = { onItemClick(item.route) }) {
                             Icon(
                                 imageVector = item.icon,
                                 contentDescription = item.label,
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,  // ✅ Blanc → onPrimary
                                 modifier = Modifier.size(30.dp)
                             )
                         }
                     }
                 } else {
-                    // Regular buttons
                     IconButton(onClick = { onItemClick(item.route) }) {
                         Icon(
                             imageVector = item.icon,
                             contentDescription = item.label,
                             modifier = Modifier.size(35.dp),
-                            tint = colorSelected
+                            tint = tintColor
                         )
                     }
                 }
@@ -145,6 +146,7 @@ fun CustomBottomBar(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

@@ -1,5 +1,6 @@
 package com.example.banqueapp.navigation
 
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,72 +26,74 @@ fun AppNavGraph(
 ) {
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-        startDestination = Destinations.WELCOME
-    ) {
+    Surface() {
+        NavHost(
+            navController = navController,
+            startDestination = Destinations.WELCOME
+        ) {
 
-        composable(Destinations.WELCOME) {
-            val uiState by userViewModel.uiState.collectAsState()
+            composable(Destinations.WELCOME) {
+                val uiState by userViewModel.uiState.collectAsState()
 
-            LaunchedEffect(uiState) {
-                if (uiState is UserUiState.LoggedIn) {
-                    navController.navigate(Destinations.PIN) {
-                        popUpTo(Destinations.WELCOME) { inclusive = true }
+                LaunchedEffect(uiState) {
+                    if (uiState is UserUiState.LoggedIn) {
+                        navController.navigate(Destinations.PIN) {
+                            popUpTo(Destinations.WELCOME) { inclusive = true }
+                        }
                     }
                 }
+
+                WelcomeScreen(
+                    onLoginClick = { navController.navigate(Destinations.LOGIN) },
+                    onSignInClick = { navController.navigate(Destinations.SIGNIN) }
+                )
             }
 
-            WelcomeScreen(
-                onLoginClick = { navController.navigate(Destinations.LOGIN) },
-                onSignInClick = { navController.navigate(Destinations.SIGNIN) }
-            )
-        }
 
+            composable(Destinations.LOGIN) {
+                LoginScreen(
+                    userViewModel = userViewModel,
+                    onLoginSuccess = { navController.navigate(Destinations.PIN) },
+                    onBack = { navController.popBackStack() }
+                )
+            }
 
-        composable(Destinations.LOGIN) {
-            LoginScreen(
-                userViewModel = userViewModel,
-                onLoginSuccess = { navController.navigate(Destinations.PIN) },
-                onBack = { navController.popBackStack() }
-            )
-        }
+            composable(Destinations.SIGNIN) {
+                SignInScreen(
+                    userViewModel = userViewModel,
+                    onSignInSuccess = { navController.navigate(Destinations.WELCOME) },
+                    onBack = { navController.popBackStack() }
+                )
+            }
 
-        composable(Destinations.SIGNIN) {
-            SignInScreen(
-                userViewModel = userViewModel,
-                onSignInSuccess = { navController.navigate(Destinations.WELCOME) },
-                onBack = { navController.popBackStack() }
-            )
-        }
-
-        composable(Destinations.PIN) {
-            PinScreen(
-                userViewModel = userViewModel,
-                onPinSuccess = {
-                    navController.navigate(Destinations.HOME) {
-                        popUpTo(Destinations.WELCOME) { inclusive = true }
+            composable(Destinations.PIN) {
+                PinScreen(
+                    userViewModel = userViewModel,
+                    onPinSuccess = {
+                        navController.navigate(Destinations.HOME) {
+                            popUpTo(Destinations.WELCOME) { inclusive = true }
+                        }
+                    },
+                    onBack = {
+                        userViewModel.onLogout()
+                        navController.navigate(Destinations.WELCOME) {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
-                },
-                onBack = {
-                    userViewModel.onLogout()
-                    navController.navigate(Destinations.WELCOME) {
+                )
+            }
+
+            composable(Destinations.HOME) {
+                BottomNavOverlay(
+                    userViewModel = userViewModel,
+                    settingsViewModel = settingsViewModel,
+                    transactionViewModel = transactionViewModel,
+                    onLogout = { navController.navigate(Destinations.WELCOME) {
+                        userViewModel.onLogout()
                         popUpTo(0) { inclusive = true }
-                    }
-                }
-            )
-        }
-
-        composable(Destinations.HOME) {
-            BottomNavOverlay(
-                userViewModel = userViewModel,
-                settingsViewModel = settingsViewModel,
-                transactionViewModel = transactionViewModel,
-                onLogout = { navController.navigate(Destinations.WELCOME) {
-                    userViewModel.onLogout()
-                    popUpTo(0) { inclusive = true }
-                }},
-            )
+                    }},
+                )
+            }
         }
     }
 }
