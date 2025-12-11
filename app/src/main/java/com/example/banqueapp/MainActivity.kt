@@ -70,7 +70,6 @@ fun BanqueApp(
             userViewModel = userViewModel,
             settingsViewModel = settingsViewModel,
             transactionViewModel = transactionViewModel
-
         )
     }
 }
