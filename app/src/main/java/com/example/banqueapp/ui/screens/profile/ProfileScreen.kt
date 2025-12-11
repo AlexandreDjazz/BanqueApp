@@ -15,7 +15,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.domain.models.User
-import com.example.banqueapp.ui.components.BottomBar
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
 import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
@@ -25,10 +24,7 @@ import com.example.banqueapp.viewModels.UserViewModel
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
     userViewModel: UserViewModel,
-    onProfile: () -> Unit,
-    onHome: () -> Unit,
-    onSettings: () -> Unit,
-
+    onLogout: () -> Unit
 ) {
     val uiState by userViewModel.uiState.collectAsState()
 
@@ -39,11 +35,8 @@ fun ProfileScreen(
         is UserUiState.LoggedIn -> {
             ProfileContent(
                 user = currentState.user,
-                userViewModel = userViewModel,
                 onNavigateToSettings = onNavigateToSettings,
-                onProfile = onProfile,
-                onHome = onHome,
-                onSettings = onSettings
+                onLogout = onLogout
             )
         }
     }
@@ -53,11 +46,8 @@ fun ProfileScreen(
 @Composable
 private fun ProfileContent(
     user: User,
-    userViewModel: UserViewModel,
-    onNavigateToSettings: () -> Unit,
-    onProfile: () -> Unit,
-    onHome: () -> Unit,
-    onSettings: () -> Unit
+    onLogout: () -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -65,13 +55,6 @@ private fun ProfileContent(
         topBar = {
             TopAppBar(
                 title = { Text("Mon Profil") }
-            )
-        },
-        bottomBar = {
-            BottomBar(
-                onProfile = onProfile,
-                onHome = onHome,
-                onSettings = onSettings
             )
         }
     ) { paddingValues ->
@@ -99,11 +82,10 @@ private fun ProfileContent(
                 value = user.email
             )
 
-            // Phone manquant dans User → à ajouter en DB ou placeholder
             ProfileInfoItem(
                 icon = Icons.Default.Phone,
                 label = "Téléphone",
-                value = "Non renseigné"  // ou ajoute phone à UserEntity
+                value = user.phone
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -131,7 +113,7 @@ private fun ProfileContent(
             ProfileActionButton(
                 icon = Icons.Default.ExitToApp,
                 text = "Se déconnecter",
-                onClick = { userViewModel.onLogout() },
+                onClick = onLogout,
                 isDestructive = true
             )
         }

@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.settings
+package com.example.banqueapp.ui.screens.profile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,21 +9,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.ThemeMode
-import com.example.banqueapp.ui.components.BottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
     onNavigateToChangePassword: () -> Unit = {},
-    viewModel: SettingsViewModel = viewModel(),
-    onProfile: () -> Unit,
-    onHome: () -> Unit,
-    onSettings: () -> Unit
+    viewModel: SettingsViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showThemeDialog by remember { mutableStateOf(false) }
@@ -40,13 +36,6 @@ fun SettingsScreen(
                         )
                     }
                 }
-            )
-        },
-        bottomBar = {
-            BottomBar(
-                onProfile = onProfile,
-                onHome = onHome,
-                onSettings = onSettings
             )
         }
     ) { paddingValues ->
@@ -117,7 +106,7 @@ fun SettingsSection(title: String) {
 
 @Composable
 fun SettingsItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     subtitle: String,
     onClick: () -> Unit
@@ -157,7 +146,7 @@ fun SettingsItem(
 
 @Composable
 fun SettingsSwitchItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     subtitle: String,
     checked: Boolean,

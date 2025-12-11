@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.map
+package com.example.banqueapp.ui.screens.menu
 
 import android.Manifest
 import androidx.compose.foundation.background
@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.banqueapp.data.model.ATM
-import com.example.banqueapp.ui.components.BottomBar
 import com.example.banqueapp.viewModels.MapViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -37,10 +36,7 @@ import com.google.maps.android.compose.*
 fun MapScreen(
     onNavigateBack: () -> Unit = {},
     showBackButton: Boolean = false,
-    viewModel: MapViewModel = viewModel(),
-    onProfile: () -> Unit,
-    onHome: () -> Unit,
-    onSettings: () -> Unit
+    viewModel: MapViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -103,13 +99,6 @@ fun MapScreen(
                     )
                 }
             }
-        },
-        bottomBar = {
-            BottomBar(
-                onProfile = onProfile,
-                onHome = onHome,
-                onSettings = onSettings
-            )
         }
     ) { paddingValues ->
         Column(
@@ -168,7 +157,7 @@ private fun MapContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.6f)
+                .fillMaxHeight(0.8f)
         ) {
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
@@ -226,7 +215,7 @@ private fun ATMListSection(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.4f),
+            .fillMaxHeight(1f),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
