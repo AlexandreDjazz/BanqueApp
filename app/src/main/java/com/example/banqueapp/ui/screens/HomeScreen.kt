@@ -36,6 +36,7 @@ fun HomeScreen(
     transactionViewModel: TransactionViewModel,
     userViewModel: UserViewModel,
     onSeeAllTransaction: () -> Unit
+    openGraph: () -> Unit,
 ) {
     val uiState by userViewModel.uiState.collectAsState()
 
@@ -57,6 +58,7 @@ fun HomeScreen(
                 userViewModel = userViewModel,
                 transactionViewModel= transactionViewModel,
                 onSeeAllTransaction = onSeeAllTransaction
+                openGraph = {openGraph()}
             )
         }
     }
@@ -68,6 +70,7 @@ private fun HomeContent(
     userViewModel: UserViewModel,
     transactionViewModel: TransactionViewModel,
     onSeeAllTransaction: () -> Unit
+    openGraph: () -> Unit,
 ) {
     val transactions by transactionViewModel.transactions.collectAsState()
     val uiState by userViewModel.uiState.collectAsState()
@@ -103,12 +106,17 @@ private fun HomeContent(
                     fontWeight = FontWeight.Bold
                 )
             }
-            Icon(
-                Icons.Default.Person,
-                contentDescription = "Compte",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(32.dp)
-            )
+            IconButton(
+                onClick = {openGraph()}
+            ) {
+                Icon(
+                    Icons.Default.Info,
+                    contentDescription = "Graph",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
+
         }
         BalanceCard(balance = user.balance)
         Spacer(modifier = Modifier.height(32.dp))
