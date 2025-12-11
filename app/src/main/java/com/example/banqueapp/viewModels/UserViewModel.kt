@@ -96,7 +96,7 @@ class UserViewModel(
             try {
                 val user = userRepository.getUserByEmail(email)
                 if (user?.password == password) {
-                    dataStoreManager.saveUser(user.id, user.name, user.email)
+                    dataStoreManager.saveUser(user.id)
                     _uiState.value = UserUiState.LoggedIn(user)
                     onSuccess.invoke()
                 } else {
