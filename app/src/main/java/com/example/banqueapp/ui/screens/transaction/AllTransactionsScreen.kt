@@ -65,7 +65,6 @@ fun AllTransactionsScreen(
                     Column(
                         modifier = Modifier.padding(20.dp)
                     ) {
-                        // Compter les transactions du mois en cours
                         val currentMonthTransactions = transactions.count { transaction ->
                             val calendar = Calendar.getInstance()
                             calendar.timeInMillis = transaction.date

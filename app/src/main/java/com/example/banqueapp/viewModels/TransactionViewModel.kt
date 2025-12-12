@@ -38,7 +38,6 @@ class TransactionViewModel(
     }
 
     fun deleteTransaction(userId: Int, transactionId: Int) {
-        //_transactions.update { it.filter { t -> t.id != transactionId } }
 
         viewModelScope.launch {
             transactionRepository.deleteTransaction(transactionId, userId)
