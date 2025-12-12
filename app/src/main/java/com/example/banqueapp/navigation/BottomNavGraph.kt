@@ -17,6 +17,7 @@ import com.example.banqueapp.ui.screens.menu.SubMenuScreen
 import com.example.banqueapp.ui.screens.profile.EditProfileScreen
 import com.example.banqueapp.ui.screens.profile.ProfileScreen
 import com.example.banqueapp.ui.screens.profile.SettingsScreen
+import com.example.banqueapp.ui.screens.profile.SupportScreen
 import com.example.banqueapp.ui.screens.transaction.AllTransactionsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
@@ -73,6 +74,12 @@ fun BottomNavGraph(
                 onNavigateBack = { bottomNavController.popBackStack() },
                 onNavigateToChangePassword = {},
                 viewModel = settingsViewModel
+            )
+        }
+
+        composable(Destinations.SUPPORT) {
+            SupportScreen(
+                onBack = {bottomNavController.popBackStack()}
             )
         }
 

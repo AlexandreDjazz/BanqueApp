@@ -11,6 +11,7 @@ object Destinations {
 
     const val SETTINGS = "settings"
     const val EDIT_PROFILE = "edit_profile"
+    const val SUPPORT = "support"
 
     const val SUB_MENU = "submenu"
 
