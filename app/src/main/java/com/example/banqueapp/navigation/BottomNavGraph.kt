@@ -116,7 +116,9 @@ fun BottomNavGraph(
         }
 
         composable(SubMenuDestinations.MARCHES) {
-            MarchesScreen()
+            MarchesScreen(
+                onNavigateBack = {bottomNavController.popBackStack()}
+            )
         }
 
 
