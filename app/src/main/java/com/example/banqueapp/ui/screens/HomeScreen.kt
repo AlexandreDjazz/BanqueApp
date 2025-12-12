@@ -33,7 +33,6 @@ import com.example.banqueapp.viewModels.UserUiState
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    balance: String = "0,00 €",
     transactionViewModel: TransactionViewModel,
     userViewModel: UserViewModel,
     onSeeAllTransaction: () -> Unit
@@ -55,8 +54,7 @@ fun HomeScreen(
         is UserUiState.LoggedIn -> {
             HomeContent(
                 modifier = modifier,
-                user = currentState.user,
-                balance = balance,
+                userViewModel = userViewModel,
                 transactionViewModel= transactionViewModel,
                 onSeeAllTransaction = onSeeAllTransaction
             )
@@ -67,15 +65,23 @@ fun HomeScreen(
 @Composable
 private fun HomeContent(
     modifier: Modifier,
-    user: User,
-    balance: String,
+    userViewModel: UserViewModel,
     transactionViewModel: TransactionViewModel,
     onSeeAllTransaction: () -> Unit
 ) {
     val transactions by transactionViewModel.transactions.collectAsState()
+    val uiState by userViewModel.uiState.collectAsState()
+
+    val user = (uiState as? UserUiState.LoggedIn)?.user
+
+    if(user == null){
+        ErrorScreen("User is null")
+        return
+    }
 
     LaunchedEffect(user.id) {
         transactionViewModel.loadTransactions(user.id)
+        userViewModel.loadUser()
     }
 
     Column(
@@ -104,7 +110,7 @@ private fun HomeContent(
                 modifier = Modifier.size(32.dp)
             )
         }
-        BalanceCard(balance = balance)
+        BalanceCard(balance = user.balance)
         Spacer(modifier = Modifier.height(32.dp))
         TransactionsSection(
             transactions = transactions,

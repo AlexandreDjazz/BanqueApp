@@ -93,11 +93,13 @@ fun TransactionDebugScreen(
                         onClick = {
                             val isAdd = Random.nextBoolean()
                             val userId = (uiState as? UserUiState.LoggedIn)?.user?.id ?: 0
+                            val amount = if (isAdd) 100.0 else -100.0
                             transactionViewModel.addTransaction(
                                 userId = userId,
                                 title = if (isAdd) "Dépôt" else "Retrait",
-                                amount = if (isAdd) 100.0 else -100.0
+                                amount = amount
                             )
+                            userViewModel.updateBalance(userId, amount)
                         },
                         modifier = Modifier.weight(1f)
                     ) {

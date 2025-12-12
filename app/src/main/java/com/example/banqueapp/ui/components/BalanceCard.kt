@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun BalanceCard(
-    balance: String,
+    balance: Double,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -42,7 +42,7 @@ fun BalanceCard(
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                text = balance,
+                text = formatBalance(balance),
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -56,4 +56,8 @@ fun BalanceCard(
             )
         }
     }
+}
+
+private fun formatBalance(balance: Double): String {
+    return "${"%.2f".format(balance)} €"
 }

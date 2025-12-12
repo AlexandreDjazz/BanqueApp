@@ -28,7 +28,10 @@ class UserViewModel(
     val uiState: StateFlow<UserUiState> = _uiState.asStateFlow()
 
     init {
+        loadUser()
+    }
 
+    fun loadUser(){
         dataStoreManager.currentUserFlow
             .onEach { user ->
                 if (user != null) {
@@ -44,7 +47,6 @@ class UserViewModel(
             }
             .launchIn(viewModelScope)
     }
-
 
     fun isValidEmail(email: String): Boolean {
         val emailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}".toRegex()
@@ -131,6 +133,12 @@ class UserViewModel(
             true
         } catch (e: Exception) {
             false
+        }
+    }
+
+    fun updateBalance(userID: Int, amount: Double){
+        viewModelScope.launch {
+            userRepository.updateBalance(userID, amount)
         }
     }
 

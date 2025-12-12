@@ -15,6 +15,9 @@ interface UserDao {
     @Update
     suspend fun updateUser(user: UserEntity)
 
+    @Query("UPDATE users SET balance = balance + :amount WHERE id = :userID")
+    suspend fun updateBalance(userID: Int, amount: Double)
+
     @Query("SELECT * FROM users WHERE email = :email LIMIT 1")
     suspend fun getUserByEmail(email: String): UserEntity?
 
