@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -35,7 +36,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     transactionViewModel: TransactionViewModel,
     userViewModel: UserViewModel,
-    onSeeAllTransaction: () -> Unit
+    onSeeAllTransaction: () -> Unit,
+    openGraph: () -> Unit,
 ) {
     val uiState by userViewModel.uiState.collectAsState()
 
@@ -56,7 +58,8 @@ fun HomeScreen(
                 modifier = modifier,
                 userViewModel = userViewModel,
                 transactionViewModel= transactionViewModel,
-                onSeeAllTransaction = onSeeAllTransaction
+                onSeeAllTransaction = onSeeAllTransaction,
+                openGraph = {openGraph()}
             )
         }
     }
@@ -67,7 +70,8 @@ private fun HomeContent(
     modifier: Modifier,
     userViewModel: UserViewModel,
     transactionViewModel: TransactionViewModel,
-    onSeeAllTransaction: () -> Unit
+    onSeeAllTransaction: () -> Unit,
+    openGraph: () -> Unit,
 ) {
     val transactions by transactionViewModel.transactions.collectAsState()
     val uiState by userViewModel.uiState.collectAsState()
@@ -103,12 +107,17 @@ private fun HomeContent(
                     fontWeight = FontWeight.Bold
                 )
             }
-            Icon(
-                Icons.Default.Person,
-                contentDescription = "Compte",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(32.dp)
-            )
+            IconButton(
+                onClick = {openGraph()}
+            ) {
+                Icon(
+                    Icons.Default.Info,
+                    contentDescription = "Graph",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
+
         }
         BalanceCard(balance = user.balance)
         Spacer(modifier = Modifier.height(32.dp))

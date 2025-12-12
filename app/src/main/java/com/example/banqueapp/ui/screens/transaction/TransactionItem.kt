@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.domain.models.Transaction
+import com.example.banqueapp.domain.models.TransactionColor
 import com.example.banqueapp.domain.models.TransactionType
 import java.util.Date
 import java.util.Locale
@@ -45,8 +46,8 @@ fun TransactionItem(
     }
 
     val amountColor = when (transaction.type) {
-        TransactionType.ADD -> Color(0xFF2E7D32)   // Vert
-        TransactionType.WITHDRAW -> Color(0xFFC62828) // Rouge
+        TransactionType.ADD -> TransactionColor.GREEN.color
+        TransactionType.WITHDRAW -> TransactionColor.RED.color
     }
 
     Card(
