@@ -13,6 +13,7 @@ import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.menu.DebugMenuScreen
 import com.example.banqueapp.ui.screens.debug.TransactionDebugScreen
 import com.example.banqueapp.ui.screens.graph.GraphMenuScreen
+import com.example.banqueapp.ui.screens.marches.MarchesScreen
 import com.example.banqueapp.ui.screens.menu.MapScreen
 import com.example.banqueapp.ui.screens.menu.SubMenuScreen
 import com.example.banqueapp.ui.screens.profile.EditProfileScreen
@@ -114,6 +115,9 @@ fun BottomNavGraph(
             )
         }
 
+        composable(SubMenuDestinations.MARCHES) {
+            MarchesScreen()
+        }
 
 
 

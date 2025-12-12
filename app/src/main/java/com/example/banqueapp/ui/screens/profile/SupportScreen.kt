@@ -30,7 +30,7 @@ fun SupportScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Support & Aide") },
+                title = { Text("Aide & Support") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(

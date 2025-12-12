@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.banqueapp.navigation.Destinations
 import com.example.banqueapp.navigation.SubMenuDestinations
 import com.example.banqueapp.ui.components.ButtonNewPage
 
@@ -36,12 +39,40 @@ fun SubMenuScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+
+            ButtonNewPage(
+                title = "Marchés",
+                subtitle = "Cours de la bourse",
+                icon = Icons.Default.ShoppingCart,
+                onClick = {
+                    navController.navigate(SubMenuDestinations.MARCHES)
+                }
+            )
+
             ButtonNewPage(
                 title = "DAB",
                 subtitle = "Accéder à la carte",
                 icon = Icons.Default.Place,
                 onClick = {
                     navController.navigate(SubMenuDestinations.MAP)
+                }
+            )
+
+            ButtonNewPage(
+                title = "Graph",
+                subtitle = "Voir les données",
+                icon = Icons.Default.Info,
+                onClick = {
+                    navController.navigate(Destinations.GRAPH)
+                }
+            )
+
+            ButtonNewPage(
+                title = "Aide & Support",
+                subtitle = "Nous contacter",
+                icon = Icons.Default.Info,
+                onClick = {
+                    navController.navigate(Destinations.SUPPORT)
                 }
             )
 
