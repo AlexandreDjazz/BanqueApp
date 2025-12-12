@@ -28,7 +28,10 @@ class UserViewModel(
     val uiState: StateFlow<UserUiState> = _uiState.asStateFlow()
 
     init {
+        loadUser()
+    }
 
+    fun loadUser(){
         dataStoreManager.currentUserFlow
             .onEach { user ->
                 if (user != null) {
@@ -44,7 +47,6 @@ class UserViewModel(
             }
             .launchIn(viewModelScope)
     }
-
 
     fun isValidEmail(email: String): Boolean {
         val emailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}".toRegex()
@@ -115,6 +117,31 @@ class UserViewModel(
             _uiState.value = UserUiState.LoggedOut
         }
     }
+
+    suspend fun updateProfile(name: String, email: String, phone: String): Boolean {
+        return try {
+            val currentUser = (uiState.value as? UserUiState.LoggedIn)?.user ?: return false
+
+            val updatedUser = currentUser.copy(
+                name = name,
+                email = email,
+                phone = phone
+            )
+
+            userRepository.updateUser(updatedUser)
+            _uiState.value = UserUiState.LoggedIn(updatedUser)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun updateBalance(userID: Int, amount: Double){
+        viewModelScope.launch {
+            userRepository.updateBalance(userID, amount)
+        }
+    }
+
 
     fun checkPin(inputPin: String): Boolean {
         return (uiState.value as? UserUiState.LoggedIn)?.user?.pin == inputPin

@@ -1,11 +1,10 @@
-package com.example.banqueapp.ui.screens.debug
+package com.example.banqueapp.ui.screens.menu
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,8 +44,7 @@ fun DebugMenuScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(24.dp),
+                .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ButtonNewPage(

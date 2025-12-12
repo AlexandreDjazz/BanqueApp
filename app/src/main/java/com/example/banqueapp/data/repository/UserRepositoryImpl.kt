@@ -23,6 +23,10 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
         userDao.updateUser(UserMapper.toEntity(user))
     }
 
+    override suspend fun updateBalance(userID: Int, amount: Double) {
+        userDao.updateBalance(userID, amount)
+    }
+
 
     override suspend fun deleteUserById(id: Int) {
         userDao.deleteUserById(id)

@@ -3,19 +3,25 @@ package com.example.banqueapp.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.banqueapp.ui.screens.HomeScreen
-import com.example.banqueapp.ui.screens.debug.DebugMenuScreen
+import com.example.banqueapp.ui.screens.menu.DebugMenuScreen
 import com.example.banqueapp.ui.screens.debug.TransactionDebugScreen
 import com.example.banqueapp.ui.screens.menu.MapScreen
 import com.example.banqueapp.ui.screens.menu.SubMenuScreen
+import com.example.banqueapp.ui.screens.profile.EditProfileScreen
 import com.example.banqueapp.ui.screens.profile.ProfileScreen
 import com.example.banqueapp.ui.screens.profile.SettingsScreen
+import com.example.banqueapp.ui.screens.profile.SupportScreen
+import com.example.banqueapp.ui.screens.transaction.AllTransactionsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
+import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
@@ -27,6 +33,10 @@ fun BottomNavGraph(
     innerPadding: PaddingValues,
     onLogout: () -> Unit
 ) {
+
+    val uiState by userViewModel.uiState.collectAsState()
+    val currentUser = (uiState as? UserUiState.LoggedIn)?.user
+
     NavHost(
         navController = bottomNavController,
         startDestination = Destinations.HOME,
@@ -35,17 +45,26 @@ fun BottomNavGraph(
         composable(Destinations.HOME) {
             HomeScreen(
                 userViewModel = userViewModel,
-                transactionViewModel = transactionViewModel
+                transactionViewModel = transactionViewModel,
+                onSeeAllTransaction = {bottomNavController.navigate(Destinations.ALL_TRANSACTIONS)}
             )
         }
 
         composable(Destinations.PROFILE) {
             ProfileScreen(
-                onNavigateToSettings = {
-                    bottomNavController.navigate(Destinations.SETTINGS)
-                },
+                onNavigateToSettings = { bottomNavController.navigate(Destinations.SETTINGS) },
+                onNavigateToEditProfile = { bottomNavController.navigate(Destinations.EDIT_PROFILE) },
+                onNavigateToSupport = { bottomNavController.navigate(Destinations.SUPPORT) },
                 onLogout = onLogout,
                 userViewModel = userViewModel
+            )
+        }
+
+        composable(Destinations.EDIT_PROFILE) {
+            EditProfileScreen(
+                user = currentUser,
+                userViewModel = userViewModel,
+                onCancel = { bottomNavController.popBackStack() }
             )
         }
 
@@ -58,9 +77,23 @@ fun BottomNavGraph(
             )
         }
 
+        composable(Destinations.SUPPORT) {
+            SupportScreen(
+                onBack = {bottomNavController.popBackStack()}
+            )
+        }
+
         composable(Destinations.SUB_MENU) {
             SubMenuScreen(
                 navController = bottomNavController,
+            )
+        }
+
+        composable(Destinations.ALL_TRANSACTIONS) {
+            AllTransactionsScreen(
+                transactionViewModel = transactionViewModel,
+                userViewModel = userViewModel,
+                onBack = {bottomNavController.navigateUp()}
             )
         }
 

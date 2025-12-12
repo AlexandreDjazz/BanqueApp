@@ -86,7 +86,7 @@ fun MapScreen(
                 }
             )
         },
-        floatingActionButton = {
+        /*floatingActionButton = {
             if (uiState.hasLocationPermission) {
                 FloatingActionButton(
                     onClick = { viewModel.getCurrentLocation() },
@@ -99,7 +99,7 @@ fun MapScreen(
                     )
                 }
             }
-        }
+        }*/
     ) { paddingValues ->
         Column(
             modifier = Modifier

@@ -23,6 +23,8 @@ import com.example.banqueapp.viewModels.UserViewModel
 @Composable
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
+    onNavigateToEditProfile: () -> Unit,
+    onNavigateToSupport: () -> Unit,
     userViewModel: UserViewModel,
     onLogout: () -> Unit
 ) {
@@ -36,6 +38,8 @@ fun ProfileScreen(
             ProfileContent(
                 user = currentState.user,
                 onNavigateToSettings = onNavigateToSettings,
+                onNavigateToEditProfile = onNavigateToEditProfile,
+                onNavigateToSupport = onNavigateToSupport,
                 onLogout = onLogout
             )
         }
@@ -47,7 +51,9 @@ fun ProfileScreen(
 private fun ProfileContent(
     user: User,
     onLogout: () -> Unit,
-    onNavigateToSettings: () -> Unit
+    onNavigateToSettings: () -> Unit,
+    onNavigateToEditProfile: () -> Unit,
+    onNavigateToSupport: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -95,7 +101,7 @@ private fun ProfileContent(
             ProfileActionButton(
                 icon = Icons.Default.Edit,
                 text = "Modifier le profil",
-                onClick = { /* Navigue vers EditProfile */ }
+                onClick = onNavigateToEditProfile
             )
 
             ProfileActionButton(
@@ -107,7 +113,7 @@ private fun ProfileContent(
             ProfileActionButton(
                 icon = Icons.Default.Info,
                 text = "Aide et support",
-                onClick = { /* Ouvre support */ }
+                onClick = onNavigateToSupport
             )
 
             ProfileActionButton(
@@ -120,7 +126,7 @@ private fun ProfileContent(
     }
 }
 
-//pas fini
+// TODO()
 @Composable
 fun ProfileHeader(user: User) {
     Column(
@@ -212,16 +218,18 @@ fun ProfileActionButton(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     text: String,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     isDestructive: Boolean = false
 ) {
-    OutlinedButton(
+    Button(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = if (isDestructive) MaterialTheme.colorScheme.error
-                          else MaterialTheme.colorScheme.primary
+            .padding(vertical = 4.dp),
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (isDestructive) MaterialTheme.colorScheme.errorContainer
+            else MaterialTheme.colorScheme.primary
         )
     ) {
         Icon(
