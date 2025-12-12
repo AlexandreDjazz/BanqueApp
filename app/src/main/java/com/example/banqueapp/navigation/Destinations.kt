@@ -10,6 +10,7 @@ object Destinations {
     const val PROFILE = "profile"
 
     const val SETTINGS = "settings"
+    const val EDIT_PROFILE = "edit_profile"
 
     const val SUB_MENU = "submenu"
 

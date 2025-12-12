@@ -116,6 +116,25 @@ class UserViewModel(
         }
     }
 
+    suspend fun updateProfile(name: String, email: String, phone: String): Boolean {
+        return try {
+            val currentUser = (uiState.value as? UserUiState.LoggedIn)?.user ?: return false
+
+            val updatedUser = currentUser.copy(
+                name = name,
+                email = email,
+                phone = phone
+            )
+
+            userRepository.updateUser(updatedUser)
+            _uiState.value = UserUiState.LoggedIn(updatedUser)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+
     fun checkPin(inputPin: String): Boolean {
         return (uiState.value as? UserUiState.LoggedIn)?.user?.pin == inputPin
     }

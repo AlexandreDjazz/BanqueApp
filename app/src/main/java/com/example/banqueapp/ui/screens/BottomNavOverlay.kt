@@ -128,7 +128,7 @@ fun CustomBottomBar(
                             Icon(
                                 imageVector = item.icon,
                                 contentDescription = item.label,
-                                tint = MaterialTheme.colorScheme.onPrimary,  // ✅ Blanc → onPrimary
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(30.dp)
                             )
                         }
@@ -165,7 +165,7 @@ fun CustomBottomBarPreview() {
         ) {
             CustomBottomBar(
                 items = items,
-                currentDestinationRoute = Destinations.HOME,  // Pour voir l'effet selected
+                currentDestinationRoute = Destinations.HOME,
                 onItemClick = {}
             )
         }
