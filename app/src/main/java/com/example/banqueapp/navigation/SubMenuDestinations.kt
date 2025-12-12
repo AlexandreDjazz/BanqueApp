@@ -4,4 +4,6 @@ object SubMenuDestinations {
     const val MAP = "submenu/map"
     const val DEBUG = "submenu/debug"
     const val MARCHES = "submenu/marches"
+
+    const val VIREMENT = "submenu/virements"
 }
