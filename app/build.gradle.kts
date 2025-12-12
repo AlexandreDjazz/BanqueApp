@@ -81,4 +81,11 @@ dependencies {
 
     // Accompanist Permissions
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    implementation("com.github.crazzyghost:alphavantage-java:1.7.0")
 }
