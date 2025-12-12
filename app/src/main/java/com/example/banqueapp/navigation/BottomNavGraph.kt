@@ -47,7 +47,7 @@ fun BottomNavGraph(
             HomeScreen(
                 userViewModel = userViewModel,
                 transactionViewModel = transactionViewModel,
-                onSeeAllTransaction = {bottomNavController.navigate(Destinations.ALL_TRANSACTIONS)}
+                onSeeAllTransaction = {bottomNavController.navigate(Destinations.ALL_TRANSACTIONS)},
                 openGraph = {bottomNavController.navigate(Destinations.GRAPH)}
             )
         }
