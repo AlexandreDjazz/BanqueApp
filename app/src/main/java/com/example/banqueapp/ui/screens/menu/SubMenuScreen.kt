@@ -2,12 +2,14 @@ package com.example.banqueapp.ui.screens.menu
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -35,13 +37,17 @@ fun SubMenuScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ButtonNewPage(
-                title = "Carte",
+                title = "DAB",
                 subtitle = "Accéder à la carte",
                 icon = Icons.Default.Place,
                 onClick = {
                     navController.navigate(SubMenuDestinations.MAP)
                 }
             )
+
+            // -------- DEBUG ---------- //
+
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             ButtonNewPage(
                 title = "Debug",
