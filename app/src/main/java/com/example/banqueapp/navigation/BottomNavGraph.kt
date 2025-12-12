@@ -101,7 +101,9 @@ fun BottomNavGraph(
 
         composable(Destinations.GRAPH) {
             GraphMenuScreen(
-                onNavigateBack = { bottomNavController.navigateUp() }
+                onNavigateBack = { bottomNavController.navigateUp() },
+                transactionViewModel = transactionViewModel,
+                userViewModel = userViewModel
             )
         }
 

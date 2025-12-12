@@ -1,43 +1,55 @@
 package com.example.banqueapp.ui.screens.graph
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import BarGraph
+import android.icu.text.SimpleDateFormat
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.example.banqueapp.domain.models.Transaction
+import com.example.banqueapp.domain.models.TransactionType
+import com.example.banqueapp.viewModels.TransactionViewModel
+import com.example.banqueapp.viewModels.UserUiState
+import com.example.banqueapp.viewModels.UserViewModel
+import kotlinx.coroutines.delay
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GraphMenuScreen(
-    onNavigateBack: () -> Unit = {},
+    transactionViewModel: TransactionViewModel,
+    userViewModel: UserViewModel,
+    onNavigateBack: () -> Unit = {}
 ) {
-    var selectedTabIndex by remember { mutableStateOf(0) }  // ✅ Index INT (0,1,2)
+    var selectedTabIndex by remember { mutableStateOf(0) }
 
-    val tabs = listOf(
-        "Graphique 1",
-        "Graphique 2",
-        "Graphique 3"
-    )
+    val uiState by userViewModel.uiState.collectAsState()
+    val transactions by transactionViewModel.transactions.collectAsState()
+    val user = (uiState as? UserUiState.LoggedIn)?.user
+
+    LaunchedEffect(user?.id) {
+        user?.let { transactionViewModel.loadTransactions(it.id) }
+    }
+
+    val tabs = listOf("Transactions par jour", "Répartition mensuelle")
 
     Scaffold(
         topBar = {
@@ -67,30 +79,10 @@ fun GraphMenuScreen(
             }
 
             when (selectedTabIndex) {
-                0 -> Graph1Screen("1")
-                1 -> Graph1Screen("2")
-                2 -> Graph1Screen("3")
-                else -> Graph1Screen("def")
+                0 -> BarGraph(transactions = transactions)
+                1 -> CamembertChart(transactions = transactions)
+                else -> Text("Graphique non implémenté")
             }
-        }
-    }
-}
-
-@Composable
-private fun Graph1Screen(text: String) {
-    Card(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text,
-                style = MaterialTheme.typography.headlineLarge
-            )
         }
     }
 }
