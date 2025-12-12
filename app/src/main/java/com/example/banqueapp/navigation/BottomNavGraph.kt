@@ -8,12 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.banqueapp.ui.screens.HomeScreen
-import com.example.banqueapp.ui.screens.debug.DebugMenuScreen
+import com.example.banqueapp.ui.screens.menu.DebugMenuScreen
 import com.example.banqueapp.ui.screens.debug.TransactionDebugScreen
 import com.example.banqueapp.ui.screens.menu.MapScreen
 import com.example.banqueapp.ui.screens.menu.SubMenuScreen
 import com.example.banqueapp.ui.screens.profile.ProfileScreen
 import com.example.banqueapp.ui.screens.profile.SettingsScreen
+import com.example.banqueapp.ui.screens.transaction.AllTransactionsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserViewModel
@@ -35,7 +36,8 @@ fun BottomNavGraph(
         composable(Destinations.HOME) {
             HomeScreen(
                 userViewModel = userViewModel,
-                transactionViewModel = transactionViewModel
+                transactionViewModel = transactionViewModel,
+                onSeeAllTransaction = {bottomNavController.navigate(Destinations.ALL_TRANSACTIONS)}
             )
         }
 
@@ -61,6 +63,14 @@ fun BottomNavGraph(
         composable(Destinations.SUB_MENU) {
             SubMenuScreen(
                 navController = bottomNavController,
+            )
+        }
+
+        composable(Destinations.ALL_TRANSACTIONS) {
+            AllTransactionsScreen(
+                transactionViewModel = transactionViewModel,
+                userViewModel = userViewModel,
+                onBack = {bottomNavController.navigateUp()}
             )
         }
 

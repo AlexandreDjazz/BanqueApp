@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.components
+package com.example.banqueapp.ui.screens.transaction
 
 import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.layout.Arrangement
@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -33,7 +31,7 @@ import java.util.Locale
 @Composable
 fun TransactionItem(
     transaction: Transaction,
-    onDelete: (Int) -> Unit,
+    onDelete: ((Int) -> Unit)? = null,
     isAdminView: Boolean = false
 ) {
     val formattedDate = remember(transaction.date) {
@@ -93,7 +91,7 @@ fun TransactionItem(
                 color = amountColor
             )
 
-            if(isAdminView) {
+            if(isAdminView && onDelete != null) {
                 IconButton(onClick = { onDelete(transaction.id) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,

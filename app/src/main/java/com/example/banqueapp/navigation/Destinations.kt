@@ -12,4 +12,6 @@ object Destinations {
     const val SETTINGS = "settings"
 
     const val SUB_MENU = "submenu"
+
+    const val ALL_TRANSACTIONS = "all_transactions"
 }

@@ -14,9 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.banqueapp.ui.screens.transaction.TransactionItem
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.UserUiState
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +58,6 @@ fun TransactionDebugScreen(
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-                // Header avec stats
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -82,7 +83,6 @@ fun TransactionDebugScreen(
                     }
                 }
 
-                // Boutons d'action
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -91,7 +91,7 @@ fun TransactionDebugScreen(
                 ) {
                     Button(
                         onClick = {
-                            val isAdd = kotlin.random.Random.nextBoolean()
+                            val isAdd = Random.nextBoolean()
                             val userId = (uiState as? UserUiState.LoggedIn)?.user?.id ?: 0
                             transactionViewModel.addTransaction(
                                 userId = userId,
@@ -124,7 +124,6 @@ fun TransactionDebugScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Liste des transactions
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -132,47 +131,17 @@ fun TransactionDebugScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(transactions) { transaction ->
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        transaction.title,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Text(
-                                        "ID: ${transaction.id} | ${transaction.amount}€",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-
-                                IconButton(
-                                    onClick = {
-                                        val userId = (uiState as? UserUiState.LoggedIn)?.user?.id ?: 0
-                                        transactionViewModel.deleteTransaction(
-                                            transactionId = transaction.id,
-                                            userId = userId
-                                        )
-                                    }
-                                ) {
-                                    Icon(
-                                        Icons.Default.Delete,
-                                        contentDescription = "Supprimer",
-                                        tint = MaterialTheme.colorScheme.error
-                                    )
-                                }
-                            }
-                        }
+                        TransactionItem(
+                            transaction = transaction,
+                            onDelete = { transactionId ->
+                                val userId = (uiState as? UserUiState.LoggedIn)?.user?.id ?: 0
+                                transactionViewModel.deleteTransaction(
+                                    transactionId = transactionId,
+                                    userId = userId
+                                )
+                            },
+                            isAdminView = true
+                        )
                     }
                 }
             }
