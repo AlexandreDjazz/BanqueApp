@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
@@ -19,6 +20,14 @@ fun LoginScreen(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val uiState by userViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState) {
+        if (uiState is UserUiState.LoggedIn) {
+            onLoginSuccess()
+        }
+    }
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -46,12 +55,20 @@ fun LoginScreen(
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            Button(onClick = {
-                userViewModel.onLogin(email, password) {
-                    onLoginSuccess()
-                }
-            }) {
+            Button(
+                onClick = {
+                    userViewModel.onLogin(email, password) {}
+                },
+                enabled = uiState !is UserUiState.Loading
+            ) {
                 Text("Se connecter")
+            }
+
+            if (uiState is UserUiState.Error) {
+                Text(
+                    text = (uiState as UserUiState.Error).message,
+                    color = MaterialTheme.colorScheme.error
+                )
             }
 
             TextButton(onClick = onBack) {
@@ -60,6 +77,7 @@ fun LoginScreen(
         }
     }
 }
+
 
 /*
 @Preview(showBackground = true)

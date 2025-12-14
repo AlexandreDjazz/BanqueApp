@@ -43,6 +43,8 @@ fun ProfileScreen(
                 onLogout = onLogout
             )
         }
+        is UserUiState.SignUpSuccess -> {
+        }
     }
 }
 

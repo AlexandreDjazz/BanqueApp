@@ -1,17 +1,18 @@
 package com.example.banqueapp.ui.screens.auth
 
-import android.widget.Toast
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 
 @Composable
@@ -26,7 +27,14 @@ fun SignInScreen(
     var password by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var pin by remember { mutableStateOf("") }
-    val context = LocalContext.current
+
+    val uiState by userViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState) {
+        if (uiState is UserUiState.SignUpSuccess) {
+            onSignInSuccess()
+        }
+    }
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -45,6 +53,11 @@ fun SignInScreen(
                 label = { Text("Nom") },
                 singleLine = true
             )
+            Text(
+                text = "2 à 20 lettres, pas d'espaces ni chiffres",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
+            )
 
             OutlinedTextField(
                 value = email,
@@ -52,13 +65,10 @@ fun SignInScreen(
                 label = { Text("Email") },
                 singleLine = true
             )
-
-            OutlinedTextField(
-                value = phone,
-                onValueChange = { phone = it },
-                label = { Text("Téléphone") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+            Text(
+                text = "Exemple : exemple@mail.com",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
             )
 
             OutlinedTextField(
@@ -68,25 +78,63 @@ fun SignInScreen(
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation()
             )
+            Text(
+                text = "6 à 16 caractères, au moins une majuscule et un caractère spécial",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
+            )
 
             OutlinedTextField(
                 value = pin,
                 onValueChange = { pin = it },
                 label = { Text("Code PIN") },
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword)
+            )
+            Text(
+                text = "6 chiffres",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
             )
 
-            Button(onClick = {
-                userViewModel.onSignUp(name, email, phone, password, pin) { success, message ->
-                    if (success) {
-                        onSignInSuccess()
-                    } else {
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }) {
+            OutlinedTextField(
+                value = phone,
+                onValueChange = { phone = it },
+                label = { Text("Téléphone") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+            )
+            Text(
+                text = "10 chiffres",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = {
+                    userViewModel.onSignUp(
+                        name,
+                        email,
+                        phone,
+                        password,
+                        pin
+                    ) { _, _ -> }
+                },
+                enabled = uiState !is UserUiState.Loading
+            ) {
                 Text("S'inscrire")
+            }
+
+            if (uiState is UserUiState.Error) {
+                Text(
+                    text = (uiState as UserUiState.Error).message,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
             }
 
             TextButton(onClick = onBack) {
@@ -95,6 +143,7 @@ fun SignInScreen(
         }
     }
 }
+
 
 /*
 @Preview(showBackground = true)
