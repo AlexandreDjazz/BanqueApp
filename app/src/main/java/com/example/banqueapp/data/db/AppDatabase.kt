@@ -9,7 +9,7 @@ import com.example.banqueapp.data.db.entities.UserEntity
 
 @Database(
     entities = [UserEntity::class, TransactionEntity::class],
-    version = 7
+    version = 8
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

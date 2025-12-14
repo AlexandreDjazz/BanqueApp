@@ -12,6 +12,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE userId = :userId ORDER BY date DESC")
     suspend fun getTransactions(userId: Int): List<TransactionEntity>
 
+    @Query("SELECT * FROM transactions WHERE userId = :userId AND virement = 1 ORDER BY date DESC")
+    suspend fun getVirements(userId: Int): List<TransactionEntity>
+
     @Insert
     suspend fun insertTransaction(transaction: TransactionEntity): Long
 
