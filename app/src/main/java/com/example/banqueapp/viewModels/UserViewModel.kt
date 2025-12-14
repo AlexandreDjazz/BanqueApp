@@ -27,8 +27,12 @@ class UserViewModel(
     private val _uiState = MutableStateFlow<UserUiState>(UserUiState.Loading)
     val uiState: StateFlow<UserUiState> = _uiState.asStateFlow()
 
+    private val _users = MutableStateFlow<List<User>>(emptyList())
+    val users: StateFlow<List<User>> = _users.asStateFlow()
+
     init {
         loadUser()
+        loadUsers()
     }
 
     fun loadUser(){
@@ -46,6 +50,12 @@ class UserViewModel(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadUsers() {
+        viewModelScope.launch {
+            _users.value = getDebugUsers()
+        }
     }
 
     fun isValidEmail(email: String): Boolean {
@@ -148,4 +158,8 @@ class UserViewModel(
     }
 
     fun isLogged() = uiState.value is UserUiState.LoggedIn
+
+    suspend fun getDebugUsers(): List<User>{
+        return userRepository.getUsers()
+    }
 }

@@ -48,12 +48,6 @@ fun BalanceCard(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 letterSpacing = 1.sp
             )
-            Text(
-                text = "€",
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
-                modifier = Modifier.offset(y = (-8).dp)
-            )
         }
     }
 }

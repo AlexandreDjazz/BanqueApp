@@ -17,12 +17,14 @@ import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
+import com.example.banqueapp.viewModels.VirementViewModel
 
 @Composable
 fun AppNavGraph(
     userViewModel: UserViewModel,
     settingsViewModel: SettingsViewModel,
-    transactionViewModel: TransactionViewModel
+    transactionViewModel: TransactionViewModel,
+    virementViewModel: VirementViewModel
 ) {
     val navController = rememberNavController()
 
@@ -88,6 +90,7 @@ fun AppNavGraph(
                     userViewModel = userViewModel,
                     settingsViewModel = settingsViewModel,
                     transactionViewModel = transactionViewModel,
+                    virementViewModel = virementViewModel,
                     onLogout = { navController.navigate(Destinations.WELCOME) {
                         userViewModel.onLogout()
                         popUpTo(0) { inclusive = true }

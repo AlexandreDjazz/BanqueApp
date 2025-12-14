@@ -55,6 +55,15 @@ fun DebugMenuScreen(
                     navController.navigate(DebugMenuDestinations.TRANSACTION)
                 }
             )
+
+            ButtonNewPage(
+                title = "Virements",
+                subtitle = "Gérer les virements",
+                icon = Icons.Default.ShoppingCart,
+                onClick = {
+                    navController.navigate(DebugMenuDestinations.VIREMENT)
+                }
+            )
         }
     }
 }

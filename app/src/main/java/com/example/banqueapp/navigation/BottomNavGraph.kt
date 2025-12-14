@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.menu.DebugMenuScreen
 import com.example.banqueapp.ui.screens.debug.TransactionDebugScreen
+import com.example.banqueapp.ui.screens.debug.VirementDebugScreen
 import com.example.banqueapp.ui.screens.graph.GraphMenuScreen
 import com.example.banqueapp.ui.screens.marches.MarchesScreen
 import com.example.banqueapp.ui.screens.menu.MapScreen
@@ -26,6 +27,8 @@ import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
+import com.example.banqueapp.viewModels.VirementViewModel
+import com.google.maps.android.compose.rememberComposeUiViewRenderer
 
 @Composable
 fun BottomNavGraph(
@@ -33,6 +36,7 @@ fun BottomNavGraph(
     userViewModel: UserViewModel,
     settingsViewModel: SettingsViewModel,
     transactionViewModel: TransactionViewModel,
+    virementViewModel: VirementViewModel,
     innerPadding: PaddingValues,
     onLogout: () -> Unit
 ) {
@@ -123,7 +127,11 @@ fun BottomNavGraph(
         }
 
         composable(SubMenuDestinations.VIREMENT) {
-            VirementsScreen()
+            VirementsScreen(
+                virementViewModel = virementViewModel,
+                userViewModel = userViewModel,
+                onBack = { bottomNavController.popBackStack() }
+            )
         }
 
 
@@ -143,6 +151,14 @@ fun BottomNavGraph(
         composable(DebugMenuDestinations.TRANSACTION) {
             TransactionDebugScreen(
                 transactionViewModel = transactionViewModel,
+                userViewModel = userViewModel,
+                onBack = { bottomNavController.navigateUp() }
+            )
+        }
+
+        composable(DebugMenuDestinations.VIREMENT) {
+            VirementDebugScreen(
+                virementViewModel = virementViewModel,
                 userViewModel = userViewModel,
                 onBack = { bottomNavController.navigateUp() }
             )
