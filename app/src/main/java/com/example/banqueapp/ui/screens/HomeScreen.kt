@@ -41,51 +41,48 @@ fun HomeScreen(
 ) {
     val uiState by userViewModel.uiState.collectAsState()
 
-    when (val currentState = uiState) {
+    when (uiState) {
         is UserUiState.Loading -> {
             Box(Modifier.fillMaxSize()) {
                 CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
         }
+
+        is UserUiState.Error -> {
+            ErrorScreen((uiState as UserUiState.Error).message)
+        }
+
         is UserUiState.LoggedOut -> {
             Text("Non connecté")
         }
-        is UserUiState.Error -> {
-            ErrorScreen(currentState.message)
-        }
+
         is UserUiState.LoggedIn -> {
             HomeContent(
                 modifier = modifier,
-                userViewModel = userViewModel,
-                transactionViewModel= transactionViewModel,
+                user = (uiState as UserUiState.LoggedIn).user,
+                transactionViewModel = transactionViewModel,
                 onSeeAllTransaction = onSeeAllTransaction,
-                openGraph = {openGraph()}
+                openGraph = openGraph
             )
+        }
+        is UserUiState.SignUpSuccess -> {
         }
     }
 }
 
+
 @Composable
 private fun HomeContent(
     modifier: Modifier,
-    userViewModel: UserViewModel,
+    user: User,
     transactionViewModel: TransactionViewModel,
     onSeeAllTransaction: () -> Unit,
     openGraph: () -> Unit,
 ) {
     val transactions by transactionViewModel.transactions.collectAsState()
-    val uiState by userViewModel.uiState.collectAsState()
-
-    val user = (uiState as? UserUiState.LoggedIn)?.user
-
-    if(user == null){
-        ErrorScreen("User is null")
-        return
-    }
 
     LaunchedEffect(user.id) {
         transactionViewModel.loadTransactions(user.id)
-        userViewModel.loadUser()
     }
 
     Column(
@@ -107,9 +104,7 @@ private fun HomeContent(
                     fontWeight = FontWeight.Bold
                 )
             }
-            IconButton(
-                onClick = {openGraph()}
-            ) {
+            IconButton(onClick = openGraph) {
                 Icon(
                     Icons.Default.Info,
                     contentDescription = "Graph",
@@ -117,10 +112,12 @@ private fun HomeContent(
                     modifier = Modifier.size(32.dp)
                 )
             }
-
         }
+
         BalanceCard(balance = user.balance)
+
         Spacer(modifier = Modifier.height(32.dp))
+
         TransactionsSection(
             transactions = transactions,
             transactionViewModel = transactionViewModel,

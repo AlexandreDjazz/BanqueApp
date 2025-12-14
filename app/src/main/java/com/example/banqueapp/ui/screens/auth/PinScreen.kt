@@ -23,6 +23,7 @@ fun PinScreen(
     onBack: () -> Unit
 ) {
     var pin by remember { mutableStateOf("") }
+    var pinError by remember { mutableStateOf<String?>(null) }
     val maxPinLength = 6
 
     Column(
@@ -70,11 +71,21 @@ fun PinScreen(
                         onPinSuccess()
                     } else {
                         pin = ""
+                        pinError = "Code PIN incorrect"
                     }
                 }
             ) {
                 Text("Valider")
             }
+
+        }
+        if (pinError != null) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = pinError!!,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 14.sp
+            )
         }
         TextButton(onClick = {onBack()}) {
             Text("Retour")
