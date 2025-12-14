@@ -203,11 +203,17 @@ class UserViewModel(
         return true
     }
 
-    fun updateBalance(userId: Int, amount: Double) {
+    fun updateBalance(userID: Int, amount: Double){
         viewModelScope.launch {
-            userRepository.updateBalance(userId, amount)
+            userRepository.updateBalance(userID, amount)
+            val currentUser = (uiState.value as? UserUiState.LoggedIn)?.user
+            if (currentUser != null && currentUser.id == userID) {
+                val updatedUser = currentUser.copy(balance = currentUser.balance + amount)
+                _uiState.value = UserUiState.LoggedIn(updatedUser)
+            }
         }
     }
+
 
     fun checkPin(inputPin: String): Boolean {
         return (uiState.value as? UserUiState.LoggedIn)?.user?.pin == inputPin
