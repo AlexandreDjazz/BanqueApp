@@ -24,7 +24,7 @@ class ATMRepository {
         apiService = retrofit.create(OverpassApiService::class.java)
     }
 
-    suspend fun getNearbyATMs(userLocation: LatLng, radiusMeters: Int = 2000): Result<List<ATM>> {
+    suspend fun getNearbyATMs(userLocation: LatLng, radiusMeters: Int = 5000): Result<List<ATM>> {
         return try {
             val query = OverpassApiService.buildATMQuery(
                 lat = userLocation.latitude,

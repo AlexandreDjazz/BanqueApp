@@ -13,7 +13,7 @@ interface OverpassApiService {
     companion object {
         const val BASE_URL = "https://overpass-api.de/api/"
 
-        fun buildATMQuery(lat: Double, lon: Double, radiusMeters: Int = 2000): String {
+        fun buildATMQuery(lat: Double, lon: Double, radiusMeters: Int = 5000): String {
             return """
                 [out:json][timeout:25];
                 (

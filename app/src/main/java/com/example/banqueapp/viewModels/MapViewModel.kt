@@ -118,7 +118,7 @@ class MapViewModel : ViewModel() {
             try {
                 val result = atmRepository.getNearbyATMs(
                     userLocation = userLocation,
-                    radiusMeters = 2000
+                    radiusMeters = 5000
                 )
 
                 result.fold(
