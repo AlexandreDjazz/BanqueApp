@@ -2,11 +2,12 @@ package com.example.banqueapp.data.mapper
 
 import com.example.banqueapp.data.db.entities.TransactionEntity
 import com.example.banqueapp.domain.models.Transaction
+import com.example.banqueapp.domain.models.Virement
 
 
-object TransactionMapper {
-    fun toDomain(entity: TransactionEntity): Transaction {
-        return Transaction(
+object VirementMapper {
+    fun toDomain(entity: TransactionEntity): Virement {
+        return Virement(
             id = entity.id,
             userId = entity.userId,
             title = entity.title,

@@ -27,11 +27,12 @@ enum class TransactionColor(val color: Color, val gradientColors: List<Color>) {
 }
 
 
-data class Transaction(
-    val id: Int = 0,
-    val userId: Int,
-    val title: String,
-    val amount: Double,
-    val date: Long,
-    val type: TransactionType
+open class Transaction(
+    open val id: Int = 0,
+    open val userId: Int,
+    open val title: String,
+    open val amount: Double,
+    open val date: Long,
+    open val virement: Boolean = false,
+    open val type: TransactionType
 )

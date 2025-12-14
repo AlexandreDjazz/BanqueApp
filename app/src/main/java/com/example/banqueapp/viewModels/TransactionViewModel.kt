@@ -9,20 +9,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class TransactionViewModel(
-    private val transactionRepository: TransactionRepository
+open class TransactionViewModel(
+    val transactionRepository: TransactionRepository
 ) : ViewModel() {
 
     private val _transactions = MutableStateFlow<List<Transaction>>(emptyList())
-    val transactions: StateFlow<List<Transaction>> = _transactions
+    open val transactions: StateFlow<List<Transaction>> = _transactions
 
-    fun loadTransactions(userId: Int) {
+    open fun loadTransactions(userId: Int) {
         viewModelScope.launch {
             _transactions.value = transactionRepository.getTransactionsForUser(userId)
         }
     }
 
-    fun addTransaction(userId: Int, title: String, amount: Double) {
+    open fun addTransaction(userId: Int, title: String, amount: Double) {
         viewModelScope.launch {
             val transaction = Transaction(
                 id = 0,
@@ -37,7 +37,7 @@ class TransactionViewModel(
         }
     }
 
-    fun deleteTransaction(userId: Int, transactionId: Int) {
+    open fun deleteTransaction(userId: Int, transactionId: Int) {
 
         viewModelScope.launch {
             transactionRepository.deleteTransaction(transactionId, userId)
@@ -47,7 +47,7 @@ class TransactionViewModel(
 
 
 
-    fun clearUserTransactions(userId: Int) {
+    open fun clearUserTransactions(userId: Int) {
         viewModelScope.launch {
             transactionRepository.deleteAllTransactionsForUser(userId)
             loadTransactions(userId)

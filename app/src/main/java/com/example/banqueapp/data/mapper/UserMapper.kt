@@ -2,7 +2,6 @@ package com.example.banqueapp.data.mapper
 
 import com.example.banqueapp.data.db.entities.UserEntity
 import com.example.banqueapp.domain.models.User
-import kotlin.Int
 
 object UserMapper {
     fun toDomain(entity: UserEntity): User {

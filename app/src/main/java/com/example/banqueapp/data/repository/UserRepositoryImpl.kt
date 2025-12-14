@@ -15,6 +15,10 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
         return userDao.getUserByEmail(email)?.let { UserMapper.toDomain(it) }
     }
 
+    override suspend fun getUsers(): List<User> {
+        return userDao.getUsers().map { UserMapper.toDomain(it) }.ifEmpty { emptyList() }
+    }
+
     override suspend fun getUserById(id: Int): User? {
         return userDao.getUserById(id)?.let { UserMapper.toDomain(it) }
     }

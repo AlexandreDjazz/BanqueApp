@@ -11,5 +11,6 @@ data class TransactionEntity(
     val title: String,
     val amount: Double,
     val date: Long,
-    val type: TransactionType
+    val type: TransactionType,
+    val virement: Boolean = false
 )
