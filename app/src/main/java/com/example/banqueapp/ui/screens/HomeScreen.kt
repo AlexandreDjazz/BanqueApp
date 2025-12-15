@@ -8,23 +8,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.banqueapp.domain.models.User
 import com.example.banqueapp.ui.components.BalanceCard
-import com.example.banqueapp.ui.screens.transaction.TransactionItem
-import com.example.banqueapp.ui.screens.transaction.TransactionsSection
+import com.example.banqueapp.ui.components.TransactionsSection
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
@@ -38,6 +32,7 @@ fun HomeScreen(
     userViewModel: UserViewModel,
     onSeeAllTransaction: () -> Unit,
     openGraph: () -> Unit,
+    onOpenTransaction: (Int) -> Unit,
 ) {
     val uiState by userViewModel.uiState.collectAsState()
 
@@ -62,7 +57,8 @@ fun HomeScreen(
                 user = (uiState as UserUiState.LoggedIn).user,
                 transactionViewModel = transactionViewModel,
                 onSeeAllTransaction = onSeeAllTransaction,
-                openGraph = openGraph
+                openGraph = openGraph,
+                onOpenTransaction = onOpenTransaction
             )
         }
         is UserUiState.SignUpSuccess -> {
@@ -78,6 +74,7 @@ private fun HomeContent(
     transactionViewModel: TransactionViewModel,
     onSeeAllTransaction: () -> Unit,
     openGraph: () -> Unit,
+    onOpenTransaction: (Int) -> Unit
 ) {
     val transactions by transactionViewModel.transactions.collectAsState()
 
@@ -120,8 +117,8 @@ private fun HomeContent(
 
         TransactionsSection(
             transactions = transactions,
-            transactionViewModel = transactionViewModel,
-            onSeeAllClick = onSeeAllTransaction
+            onSeeAllClick = onSeeAllTransaction,
+            onOpenTransaction = onOpenTransaction
         )
     }
 }

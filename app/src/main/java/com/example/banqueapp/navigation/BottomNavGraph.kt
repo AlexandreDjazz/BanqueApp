@@ -1,5 +1,6 @@
 package com.example.banqueapp.navigation
 
+import android.R.attr.type
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -8,7 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navArgument
 import com.example.banqueapp.ui.screens.HomeScreen
 import com.example.banqueapp.ui.screens.menu.DebugMenuScreen
 import com.example.banqueapp.ui.screens.debug.TransactionDebugScreen
@@ -30,6 +33,7 @@ import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.VirementViewModel
 import com.example.banqueapp.ui.screens.changepassword.ChangePasswordScreen
 import com.example.banqueapp.ui.screens.changepassword.ChangePasswordViewModel
+import com.example.banqueapp.ui.screens.transaction.TransactionDetailScreen
 
 @Composable
 fun BottomNavGraph(
@@ -56,7 +60,10 @@ fun BottomNavGraph(
                 userViewModel = userViewModel,
                 transactionViewModel = transactionViewModel,
                 onSeeAllTransaction = {bottomNavController.navigate(Destinations.ALL_TRANSACTIONS)},
-                openGraph = {bottomNavController.navigate(Destinations.GRAPH)}
+                openGraph = {bottomNavController.navigate(Destinations.GRAPH)},
+                onOpenTransaction = { transactionId ->
+                    bottomNavController.navigate("${Destinations.TRANSACTION_DETAIL}/$transactionId")
+                },
             )
         }
 
@@ -111,6 +118,19 @@ fun BottomNavGraph(
                 transactionViewModel = transactionViewModel,
                 userViewModel = userViewModel,
                 onBack = {bottomNavController.navigateUp()}
+            )
+        }
+
+        composable(
+            route = "${Destinations.TRANSACTION_DETAIL}/{transactionId}",
+            arguments = listOf(navArgument("transactionId") { type = NavType.IntType})
+        ) { backStackEntry ->
+            val transactionId = backStackEntry.arguments?.getInt("transactionId") ?: -1
+
+            TransactionDetailScreen(
+                transactionId = transactionId,
+                transactionViewModel = transactionViewModel,
+                onBackClick = { bottomNavController.popBackStack() }
             )
         }
 

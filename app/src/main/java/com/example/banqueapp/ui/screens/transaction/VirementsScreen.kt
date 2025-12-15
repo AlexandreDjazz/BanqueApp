@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.domain.models.User
+import com.example.banqueapp.ui.components.TransactionItem
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.UserUiState

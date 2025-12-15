@@ -17,6 +17,6 @@ object Destinations {
     const val SUB_MENU = "submenu"
 
     const val ALL_TRANSACTIONS = "all_transactions"
-
+    const val TRANSACTION_DETAIL = "transaction_detail"
     const val GRAPH = "graph"
 }

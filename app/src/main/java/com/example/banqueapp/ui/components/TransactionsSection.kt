@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.transaction
+package com.example.banqueapp.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,16 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import com.example.banqueapp.domain.models.Transaction
-import com.example.banqueapp.viewModels.TransactionViewModel
 
 @Composable
 fun TransactionsSection(
     transactions: List<Transaction>,
-    transactionViewModel: TransactionViewModel,
     modifier: Modifier = Modifier,
     maxTransactionView: Int? = 5,
+    onOpenTransaction: (Int) -> Unit,
     onSeeAllClick: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -53,11 +51,21 @@ fun TransactionsSection(
         ) {
             if(maxTransactionView != null) {
                 items(transactions.take(maxTransactionView)) { transaction ->
-                    TransactionItem(transaction = transaction)
+                    TransactionItem(
+                        transaction = transaction,
+                        onClick = {
+                            onOpenTransaction(transaction.id)
+                        }
+                    )
                 }
             } else {
                 items(transactions) { transaction ->
-                    TransactionItem(transaction = transaction)
+                    TransactionItem(
+                        transaction = transaction,
+                        onClick = {
+                            onOpenTransaction(transaction.id)
+                        }
+                    )
                 }
             }
         }
