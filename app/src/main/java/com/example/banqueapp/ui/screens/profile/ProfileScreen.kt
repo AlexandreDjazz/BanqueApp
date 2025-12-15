@@ -74,56 +74,60 @@ private fun ProfileContent(
         ) {
             ProfileHeader(user = user)
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(24.dp))
 
-            ProfileSection(title = "Informations personnelles")
+                ProfileSection(title = "Informations personnelles")
 
-            ProfileInfoItem(
-                icon = Icons.Default.Person,
-                label = "Nom complet",
-                value = user.name
-            )
+                ProfileInfoItem(
+                    icon = Icons.Default.Person,
+                    label = "Nom complet",
+                    value = user.name
+                )
 
-            ProfileInfoItem(
-                icon = Icons.Default.Email,
-                label = "Email",
-                value = user.email
-            )
+                ProfileInfoItem(
+                    icon = Icons.Default.Email,
+                    label = "Email",
+                    value = user.email
+                )
 
-            ProfileInfoItem(
-                icon = Icons.Default.Phone,
-                label = "Téléphone",
-                value = user.phone
-            )
+                ProfileInfoItem(
+                    icon = Icons.Default.Phone,
+                    label = "Téléphone",
+                    value = user.phone
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            ProfileSection(title = "Actions")
+                ProfileSection(title = "Actions")
 
-            ProfileActionButton(
-                icon = Icons.Default.Edit,
-                text = "Modifier le profil",
-                onClick = onNavigateToEditProfile
-            )
+                ProfileActionButton(
+                    icon = Icons.Default.Edit,
+                    text = "Modifier le profil",
+                    onClick = onNavigateToEditProfile
+                )
 
-            ProfileActionButton(
-                icon = Icons.Default.Settings,
-                text = "Paramètres",
-                onClick = onNavigateToSettings
-            )
+                ProfileActionButton(
+                    icon = Icons.Default.Settings,
+                    text = "Paramètres",
+                    onClick = onNavigateToSettings
+                )
 
-            ProfileActionButton(
-                icon = Icons.Default.Info,
-                text = "Aide et support",
-                onClick = onNavigateToSupport
-            )
+                ProfileActionButton(
+                    icon = Icons.Default.Info,
+                    text = "Aide et support",
+                    onClick = onNavigateToSupport
+                )
 
-            ProfileActionButton(
-                icon = Icons.Default.ExitToApp,
-                text = "Se déconnecter",
-                onClick = onLogout,
-                isDestructive = true
-            )
+                ProfileActionButton(
+                    icon = Icons.Default.ExitToApp,
+                    text = "Se déconnecter",
+                    onClick = onLogout,
+                    isDestructive = true
+                )
+            }
         }
     }
 }

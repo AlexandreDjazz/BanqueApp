@@ -55,63 +55,66 @@ fun EditProfileScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp)
         ) {
             ProfileHeader(user = user.copy(name = name, email = email))
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(32.dp))
 
-            ProfileSection(title = "Informations personnelles")
+                ProfileSection(title = "Informations personnelles")
 
-            EditProfileField(
-                icon = Icons.Default.Person,
-                label = "Nom complet",
-                value = name,
-                onValueChange = { name = it },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Text
+                EditProfileField(
+                    icon = Icons.Default.Person,
+                    label = "Nom complet",
+                    value = name,
+                    onValueChange = { name = it },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Text
+                    )
                 )
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            EditProfileField(
-                icon = Icons.Default.Email,
-                label = "Email",
-                value = email,
-                onValueChange = { email = it },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Email
+                EditProfileField(
+                    icon = Icons.Default.Email,
+                    label = "Email",
+                    value = email,
+                    onValueChange = { email = it },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Email
+                    )
                 )
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            EditProfileField(
-                icon = Icons.Default.Phone,
-                label = "Téléphone",
-                value = phone,
-                onValueChange = { phone = it },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Phone
+                EditProfileField(
+                    icon = Icons.Default.Phone,
+                    label = "Téléphone",
+                    value = phone,
+                    onValueChange = { phone = it },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Phone
+                    )
                 )
-            )
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
-            ProfileActionButton(
-                icon = Icons.Default.Done,
-                text = "Enregistrer les modifications",
-                onClick = {
-                    scope.launch {
-                        val success = userViewModel.updateProfile(name, email, phone)
-                        snackbarHostState.showSnackbar(
-                            if (success) "Profil mis à jour !" else "Erreur mise à jour"
-                        )
-                    }
-                },
-                enabled = name.isNotBlank() && email.isNotBlank()
-            )
+                ProfileActionButton(
+                    icon = Icons.Default.Done,
+                    text = "Enregistrer les modifications",
+                    onClick = {
+                        scope.launch {
+                            val success = userViewModel.updateProfile(name, email, phone)
+                            snackbarHostState.showSnackbar(
+                                if (success) "Profil mis à jour !" else "Erreur mise à jour"
+                            )
+                        }
+                    },
+                    enabled = name.isNotBlank() && email.isNotBlank()
+                )
+            }
         }
     }
 }
