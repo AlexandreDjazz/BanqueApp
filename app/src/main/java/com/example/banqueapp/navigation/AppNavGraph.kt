@@ -18,13 +18,15 @@ import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.VirementViewModel
+import com.example.banqueapp.ui.screens.changepassword.ChangePasswordViewModel
 
 @Composable
 fun AppNavGraph(
     userViewModel: UserViewModel,
     settingsViewModel: SettingsViewModel,
     transactionViewModel: TransactionViewModel,
-    virementViewModel: VirementViewModel
+    virementViewModel: VirementViewModel,
+    changePasswordViewModel: ChangePasswordViewModel
 ) {
     val navController = rememberNavController()
 
@@ -92,6 +94,7 @@ fun AppNavGraph(
                     settingsViewModel = settingsViewModel,
                     transactionViewModel = transactionViewModel,
                     virementViewModel = virementViewModel,
+                    changePasswordViewModel = changePasswordViewModel,
                     onLogout = { // For Profile
                         userViewModel.onLogout {
                             navController.navigate(Destinations.WELCOME) {

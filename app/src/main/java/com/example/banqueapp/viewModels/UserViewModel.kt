@@ -204,6 +204,11 @@ class UserViewModel(
         return true
     }
 
+    suspend fun updateUserPassword(updatedUser: User) {
+        userRepository.updateUser(updatedUser)
+        _uiState.value = UserUiState.LoggedIn(updatedUser)
+    }
+
     fun updateBalance(userID: Int, amount: Double){
         viewModelScope.launch {
             userRepository.updateBalance(userID, amount)

@@ -37,6 +37,7 @@ import com.example.banqueapp.ui.theme.BanqueAppTheme
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.VirementViewModel
+import com.example.banqueapp.ui.screens.changepassword.ChangePasswordViewModel
 
 data class BottomNavItem(
     val route: String,
@@ -50,6 +51,7 @@ fun BottomNavOverlay(
     settingsViewModel: SettingsViewModel,
     transactionViewModel: TransactionViewModel,
     virementViewModel: VirementViewModel,
+    changePasswordViewModel: ChangePasswordViewModel,
     onLogout: () -> Unit
 ) {
     val bottomNavController = rememberNavController()
@@ -85,6 +87,7 @@ fun BottomNavOverlay(
             settingsViewModel = settingsViewModel,
             transactionViewModel = transactionViewModel,
             virementViewModel = virementViewModel,
+            changePasswordViewModel = changePasswordViewModel,
             innerPadding = innerPadding,
             onLogout = onLogout
         )
