@@ -1,6 +1,7 @@
 package com.example.banqueapp.ui.screens.profile
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -12,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.domain.models.User
@@ -227,6 +229,8 @@ fun ProfileActionButton(
     enabled: Boolean = true,
     isDestructive: Boolean = false
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
+
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -234,8 +238,20 @@ fun ProfileActionButton(
             .padding(vertical = 4.dp),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isDestructive) MaterialTheme.colorScheme.errorContainer
-            else MaterialTheme.colorScheme.primary
+            containerColor = if (isDestructive) {
+                if (isDarkTheme) {
+                    MaterialTheme.colorScheme.errorContainer
+                } else {
+                    Color(0xFFD32F2F)
+                }
+            } else {
+                MaterialTheme.colorScheme.primary
+            },
+            contentColor = if (isDestructive && !isDarkTheme) {
+                Color.White
+            } else {
+                MaterialTheme.colorScheme.onPrimary
+            }
         )
     ) {
         Icon(
