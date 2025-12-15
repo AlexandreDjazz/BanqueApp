@@ -77,9 +77,10 @@ fun AppNavGraph(
                         }
                     },
                     onBack = {
-                        userViewModel.onLogout()
-                        navController.navigate(Destinations.WELCOME) {
-                            popUpTo(0) { inclusive = true }
+                        userViewModel.onLogout() {
+                            navController.navigate(Destinations.WELCOME) {
+                                popUpTo(0) { inclusive = true }
+                            }
                         }
                     }
                 )
@@ -91,10 +92,13 @@ fun AppNavGraph(
                     settingsViewModel = settingsViewModel,
                     transactionViewModel = transactionViewModel,
                     virementViewModel = virementViewModel,
-                    onLogout = { navController.navigate(Destinations.WELCOME) {
-                        userViewModel.onLogout()
-                        popUpTo(0) { inclusive = true }
-                    }},
+                    onLogout = { // For Profile
+                        userViewModel.onLogout {
+                            navController.navigate(Destinations.WELCOME) {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        }
+                    },
                 )
             }
         }

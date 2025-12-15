@@ -177,10 +177,11 @@ class UserViewModel(
         }
     }
 
-    fun onLogout() {
+    fun onLogout(onComplete: () -> Unit) {
         viewModelScope.launch {
             dataStoreManager.clearUser()
             _uiState.value = UserUiState.LoggedOut
+            onComplete()
         }
     }
 
