@@ -22,7 +22,7 @@ import com.example.banqueapp.ui.screens.profile.ProfileScreen
 import com.example.banqueapp.ui.screens.profile.SettingsScreen
 import com.example.banqueapp.ui.screens.profile.SupportScreen
 import com.example.banqueapp.ui.screens.transaction.AllTransactionsScreen
-import com.example.banqueapp.ui.screens.virements.VirementsScreen
+import com.example.banqueapp.ui.screens.transaction.VirementsScreen
 import com.example.banqueapp.viewModels.SettingsViewModel
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
@@ -30,7 +30,6 @@ import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.VirementViewModel
 import com.example.banqueapp.ui.screens.changepassword.ChangePasswordScreen
 import com.example.banqueapp.ui.screens.changepassword.ChangePasswordViewModel
-import com.google.maps.android.compose.rememberComposeUiViewRenderer
 
 @Composable
 fun BottomNavGraph(
