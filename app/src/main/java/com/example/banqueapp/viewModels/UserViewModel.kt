@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.banqueapp.data.datastore.DataStoreManager
 import com.example.banqueapp.domain.models.User
 import com.example.banqueapp.domain.repository.UserRepository
+import com.example.banqueapp.ui.events.BalanceEventBus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +35,7 @@ class UserViewModel(
     init {
         loadUser()
         loadUsers()
+        listenToBalanceEvents()
     }
 
     fun loadUser() {
@@ -56,6 +58,14 @@ class UserViewModel(
     private fun loadUsers() {
         viewModelScope.launch {
             _users.value = getDebugUsers()
+        }
+    }
+
+    private fun listenToBalanceEvents() {
+        viewModelScope.launch {
+            BalanceEventBus.events.collect { event ->
+                loadUser()
+            }
         }
     }
 

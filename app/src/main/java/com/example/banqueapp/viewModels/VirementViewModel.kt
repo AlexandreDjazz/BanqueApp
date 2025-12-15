@@ -6,6 +6,7 @@ import com.example.banqueapp.domain.models.TransactionType
 import com.example.banqueapp.domain.models.Virement
 import com.example.banqueapp.domain.repository.TransactionRepository
 import com.example.banqueapp.domain.repository.UserRepository
+import com.example.banqueapp.ui.events.BalanceEventBus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -110,6 +111,8 @@ class VirementViewModel(
 
                 _virementResult.value = VirementResult.Success
                 loadTransactions(fromUserId)
+
+                BalanceEventBus.emitBalanceUpdated(fromUserId)
 
             } catch (e: Exception) {
                 _virementResult.value = VirementResult.Error("Erreur virement")

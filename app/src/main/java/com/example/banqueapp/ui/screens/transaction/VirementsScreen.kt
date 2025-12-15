@@ -1,4 +1,4 @@
-package com.example.banqueapp.ui.screens.virements
+package com.example.banqueapp.ui.screens.transaction
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.domain.models.User
-import com.example.banqueapp.ui.screens.transaction.TransactionItem
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.UserUiState
