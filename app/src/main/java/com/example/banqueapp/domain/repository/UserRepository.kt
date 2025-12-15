@@ -9,6 +9,7 @@ interface UserRepository {
     suspend fun getUsers(): List<User>
     suspend fun updateUser(user: User)
     suspend fun updateBalance(userID: Int, amount: Double)
+    suspend fun clearBalance(userID: Int)
     suspend fun deleteUserById(id: Int)
     suspend fun deleteAllUsers()
 }
