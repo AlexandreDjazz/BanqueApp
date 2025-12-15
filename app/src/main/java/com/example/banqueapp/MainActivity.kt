@@ -19,12 +19,14 @@ import com.example.banqueapp.ui.theme.BanqueAppTheme
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.VirementViewModel
+import com.example.banqueapp.ui.screens.changepassword.ChangePasswordViewModel
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var transactionViewModel: TransactionViewModel
     private lateinit var virementViewModel: VirementViewModel
+    private lateinit var changePasswordViewModel: ChangePasswordViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +42,14 @@ class MainActivity : ComponentActivity() {
         userViewModel = UserViewModel(userRepository, dataStoreManager)
         transactionViewModel = TransactionViewModel(transactionRepository)
         virementViewModel = VirementViewModel(transactionRepository, userRepository)
+        changePasswordViewModel = ChangePasswordViewModel(userRepository, userViewModel)
 
         setContent {
             BanqueApp(
                 userViewModel = userViewModel,
                 transactionViewModel = transactionViewModel,
-                virementViewModel = virementViewModel
+                virementViewModel = virementViewModel,
+                changePasswordViewModel = changePasswordViewModel
             )
         }
     }
@@ -55,7 +59,8 @@ class MainActivity : ComponentActivity() {
 fun BanqueApp(
     userViewModel: UserViewModel,
     transactionViewModel: TransactionViewModel,
-    virementViewModel: VirementViewModel
+    virementViewModel: VirementViewModel,
+    changePasswordViewModel: ChangePasswordViewModel
 ) {
     val settingsViewModel: SettingsViewModel = viewModel()
 
@@ -74,7 +79,8 @@ fun BanqueApp(
             userViewModel = userViewModel,
             settingsViewModel = settingsViewModel,
             transactionViewModel = transactionViewModel,
-            virementViewModel = virementViewModel
+            virementViewModel = virementViewModel,
+            changePasswordViewModel = changePasswordViewModel
         )
     }
 }

@@ -28,6 +28,8 @@ import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserUiState
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.VirementViewModel
+import com.example.banqueapp.ui.screens.changepassword.ChangePasswordScreen
+import com.example.banqueapp.ui.screens.changepassword.ChangePasswordViewModel
 import com.google.maps.android.compose.rememberComposeUiViewRenderer
 
 @Composable
@@ -37,6 +39,7 @@ fun BottomNavGraph(
     settingsViewModel: SettingsViewModel,
     transactionViewModel: TransactionViewModel,
     virementViewModel: VirementViewModel,
+    changePasswordViewModel: ChangePasswordViewModel,
     innerPadding: PaddingValues,
     onLogout: () -> Unit
 ) {
@@ -80,8 +83,15 @@ fun BottomNavGraph(
         composable(Destinations.SETTINGS) {
             SettingsScreen(
                 onNavigateBack = { bottomNavController.popBackStack() },
-                onNavigateToChangePassword = {},
+                onNavigateToChangePassword = { bottomNavController.navigate(Destinations.CHANGE_PASSWORD) },
                 viewModel = settingsViewModel
+            )
+        }
+
+        composable(Destinations.CHANGE_PASSWORD) {
+            ChangePasswordScreen(
+                onNavigateBack = { bottomNavController.popBackStack() },
+                viewModel = changePasswordViewModel
             )
         }
 
