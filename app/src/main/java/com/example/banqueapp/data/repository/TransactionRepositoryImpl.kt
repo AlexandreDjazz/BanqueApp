@@ -1,6 +1,7 @@
 package com.example.banqueapp.data.repository
 
 import com.example.banqueapp.data.db.dao.TransactionDao
+import com.example.banqueapp.data.db.dao.UserDao
 import com.example.banqueapp.data.db.entities.TransactionEntity
 import com.example.banqueapp.data.mapper.TransactionMapper
 import com.example.banqueapp.data.mapper.VirementMapper
@@ -10,7 +11,7 @@ import com.example.banqueapp.domain.repository.TransactionRepository
 
 
 
-class TransactionRepositoryImpl(private val transactionDao: TransactionDao) : TransactionRepository {
+class TransactionRepositoryImpl(private val transactionDao: TransactionDao, private val userDao: UserDao) : TransactionRepository {
 
     override suspend fun getTransactionsForUser(userId: Int): List<Transaction> {
         return transactionDao.getTransactions(userId).map { TransactionMapper.toDomain(it) }
@@ -36,6 +37,7 @@ class TransactionRepositoryImpl(private val transactionDao: TransactionDao) : Tr
 
     override suspend fun deleteAllTransactionsForUser(userId: Int) {
         val transactions = transactionDao.getTransactions(userId) + transactionDao.getVirements(userId)
+        userDao.clearBalance(userId)
         transactions.forEach { transactionDao.deleteTransaction(it) }
     }
 }

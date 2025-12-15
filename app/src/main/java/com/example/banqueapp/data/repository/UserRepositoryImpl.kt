@@ -31,6 +31,9 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
         userDao.updateBalance(userID, amount)
     }
 
+    override suspend fun clearBalance(userID: Int) {
+        userDao.clearBalance(userID)
+    }
 
     override suspend fun deleteUserById(id: Int) {
         userDao.deleteUserById(id)

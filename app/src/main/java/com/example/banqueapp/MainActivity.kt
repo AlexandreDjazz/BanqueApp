@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         val db = DatabaseProvider.getDatabase(applicationContext)
 
         val userRepository = UserRepositoryImpl(db.userDao())
-        val transactionRepository = TransactionRepositoryImpl(db.transactionDao())
+        val transactionRepository = TransactionRepositoryImpl(db.transactionDao(), db.userDao())
         val dataStoreManager = DataStoreManager(applicationContext)
 
 

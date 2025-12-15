@@ -98,7 +98,7 @@ fun VirementDebugScreen(
                             val amount = if (isAdd) 100.0 else -100.0
                             virementViewModel.addTransaction(
                                 userId = userId,
-                                title = if (isAdd) "Virement +" else "Virement -",
+                                title = if (isAdd) "Virement : Ajout" else "Virement : Retrait",
                                 amount = amount
                             )
                             userViewModel.updateBalance(userId, amount)
