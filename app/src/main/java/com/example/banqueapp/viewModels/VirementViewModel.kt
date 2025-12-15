@@ -38,14 +38,14 @@ class VirementViewModel(
         }
     }
 
-    override fun addTransaction(userId: Int, title: String, amount: Double) {
+    override fun addTransaction(userId: Int, title: String, amount: Double, date: Long?) {
         viewModelScope.launch {
             val virement = Virement(
                 id = 0,
                 userId = userId,
                 title = title,
                 amount = amount,
-                date = System.currentTimeMillis(),
+                date = date ?: System.currentTimeMillis(),
                 type = if (amount > 0) TransactionType.ADD else TransactionType.WITHDRAW
             )
             transactionRepository.addTransaction(virement)
