@@ -70,7 +70,7 @@ class UserViewModel(
     }
 
     fun isValidPassword(password: String): Boolean {
-        val passwordRegex = """^(?=.*[A-Z])(?=.*[@#\$%^&+=!]).{8,16}$""".toRegex()
+        val passwordRegex = """^(?=.*[A-Z])(?=.*[@#\$%^&+=!]).{6,16}$""".toRegex()
         return passwordRegex.matches(password)
     }
 
