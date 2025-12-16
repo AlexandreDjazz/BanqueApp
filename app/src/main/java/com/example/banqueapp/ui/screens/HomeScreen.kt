@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.banqueapp.domain.models.User
 import com.example.banqueapp.ui.components.BalanceCard
+import com.example.banqueapp.ui.components.SearchBar
 import com.example.banqueapp.ui.components.TransactionsSection
 import com.example.banqueapp.ui.screens.utils.ErrorScreen
 import com.example.banqueapp.viewModels.UserViewModel
@@ -78,6 +79,18 @@ private fun HomeContent(
 ) {
     val transactions by transactionViewModel.transactions.collectAsState()
 
+    var searchQuery by remember { mutableStateOf("") }
+
+    val filteredTransactions = remember(searchQuery, transactions) {
+        if (searchQuery.isBlank()) {
+            transactions
+        } else {
+            transactions.filter {
+                it.title.contains(searchQuery, ignoreCase = true) ||
+                        it.amount.toString().contains(searchQuery)
+            }
+        }
+    }
     LaunchedEffect(user.id) {
         transactionViewModel.loadTransactions(user.id)
     }
@@ -112,13 +125,18 @@ private fun HomeContent(
         }
 
         BalanceCard(balance = user.balance)
-
+        SearchBar(
+            query = searchQuery,
+            onQueryChanged = { searchQuery = it },
+            onFilterClick = {}
+        )
         Spacer(modifier = Modifier.height(32.dp))
 
         TransactionsSection(
-            transactions = transactions,
+            transactions = filteredTransactions,
             onSeeAllClick = onSeeAllTransaction,
-            onOpenTransaction = onOpenTransaction
+            onOpenTransaction = onOpenTransaction,
+            maxTransactionView = 5
         )
     }
 }

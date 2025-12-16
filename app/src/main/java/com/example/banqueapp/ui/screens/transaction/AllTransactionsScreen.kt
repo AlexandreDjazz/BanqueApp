@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.banqueapp.ui.components.SearchBar
 import com.example.banqueapp.ui.components.TransactionItem
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserViewModel
@@ -27,6 +28,19 @@ fun AllTransactionsScreen(
     val uiState by userViewModel.uiState.collectAsState()
     val transactions by transactionViewModel.transactions.collectAsState()
     val currentState = uiState
+
+    var searchQuery by remember { mutableStateOf("") }
+
+    val filteredTransactions = remember(searchQuery, transactions) {
+        if (searchQuery.isBlank()) {
+            transactions
+        } else {
+            transactions.filter {
+                it.title.contains(searchQuery, ignoreCase = true) ||
+                        it.amount.toString().contains(searchQuery)
+            }
+        }
+    }
 
     LaunchedEffect(currentState) {
         if (currentState is UserUiState.LoggedIn) {
@@ -55,6 +69,11 @@ fun AllTransactionsScreen(
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChanged = { searchQuery = it },
+                    onFilterClick = {}
+                )
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -66,7 +85,7 @@ fun AllTransactionsScreen(
                     Column(
                         modifier = Modifier.padding(20.dp)
                     ) {
-                        val currentMonthTransactions = transactions.count { transaction ->
+                        val currentMonthTransactions = filteredTransactions.count { transaction ->
                             val calendar = Calendar.getInstance()
                             calendar.timeInMillis = transaction.date
                             val transactionMonth = calendar.get(Calendar.MONTH)
@@ -87,14 +106,14 @@ fun AllTransactionsScreen(
                         )
 
                         Text(
-                            "Total : ${transactions.size} transactions",
+                            "Total : ${filteredTransactions.size} transactions",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                         )
                     }
                 }
 
-                if (transactions.isEmpty()) {
+                if (filteredTransactions.isEmpty()) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -113,7 +132,7 @@ fun AllTransactionsScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                         contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
-                        items(transactions) { transaction ->
+                        items(filteredTransactions) { transaction ->
                             TransactionItem(transaction = transaction)
                         }
                     }
