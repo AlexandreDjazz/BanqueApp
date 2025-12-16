@@ -58,7 +58,7 @@ fun AppNavGraph(
                 LoginScreen(
                     userViewModel = userViewModel,
                     onLoginSuccess = { navController.navigate(Destinations.PIN) },
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.navigate(Destinations.WELCOME) }
                 )
             }
 
@@ -66,7 +66,7 @@ fun AppNavGraph(
                 SignInScreen(
                     userViewModel = userViewModel,
                     onSignInSuccess = { navController.navigate(Destinations.LOGIN) },
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.navigate(Destinations.WELCOME)  }
                 )
             }
 
@@ -95,7 +95,7 @@ fun AppNavGraph(
                     transactionViewModel = transactionViewModel,
                     virementViewModel = virementViewModel,
                     changePasswordViewModel = changePasswordViewModel,
-                    onLogout = { // For Profile
+                    onLogout = {
                         userViewModel.onLogout {
                             navController.navigate(Destinations.WELCOME) {
                                 popUpTo(0) { inclusive = true }

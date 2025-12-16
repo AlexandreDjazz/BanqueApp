@@ -127,8 +127,8 @@ class UserViewModel(
             }
 
             if (!isValidPassword(password)) {
-                _uiState.value = UserUiState.Error("Mot de passe invalide : 6-16 caractères, 1 majuscule et 1 caractère spécial")
-                onResult(false, "Mot de passe invalide : 6-16 caractères, 1 majuscule et 1 caractère spécial")
+                _uiState.value = UserUiState.Error("Mot de passe invalide : entre 6-16 caractères, au moins une 1 majuscule et 1 caractère spécial(@#$%^&+=!)")
+                onResult(false, "Mot de passe invalide : entre 6-16 caractères, au moins une 1 majuscule et 1 caractère spécial(@#$%^&+=!)")
                 return@launch
             }
 
