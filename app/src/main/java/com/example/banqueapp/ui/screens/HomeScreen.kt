@@ -128,7 +128,6 @@ private fun HomeContent(
         SearchBar(
             query = searchQuery,
             onQueryChanged = { searchQuery = it },
-            onFilterClick = {}
         )
         Spacer(modifier = Modifier.height(32.dp))
 

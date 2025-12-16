@@ -72,7 +72,6 @@ fun AllTransactionsScreen(
                 SearchBar(
                     query = searchQuery,
                     onQueryChanged = { searchQuery = it },
-                    onFilterClick = {}
                 )
                 Card(
                     modifier = Modifier
