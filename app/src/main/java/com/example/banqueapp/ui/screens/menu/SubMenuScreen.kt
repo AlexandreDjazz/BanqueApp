@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Place
@@ -34,70 +35,70 @@ fun SubMenuScreen(
             TopAppBar(title = { Text("Menu") })
         }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            item {
+                ButtonNewPage(
+                    title = "Marchés",
+                    subtitle = "Cours de la bourse",
+                    icon = Icons.Default.ShoppingCart,
+                    onClick = {
+                        navController.navigate(SubMenuDestinations.MARCHES)
+                    }
+                )
 
-            ButtonNewPage(
-                title = "Marchés",
-                subtitle = "Cours de la bourse",
-                icon = Icons.Default.ShoppingCart,
-                onClick = {
-                    navController.navigate(SubMenuDestinations.MARCHES)
-                }
-            )
+                ButtonNewPage(
+                    title = "Virement",
+                    subtitle = "Virer de l'argent à quelqu'un",
+                    icon = Icons.Default.Send,
+                    onClick = {
+                        navController.navigate(SubMenuDestinations.VIREMENT)
+                    }
+                )
 
-            ButtonNewPage(
-                title = "Virement",
-                subtitle = "Virer de l'argent à quelqu'un",
-                icon = Icons.Default.Send,
-                onClick = {
-                    navController.navigate(SubMenuDestinations.VIREMENT)
-                }
-            )
+                ButtonNewPage(
+                    title = "DAB",
+                    subtitle = "Accéder à la carte",
+                    icon = Icons.Default.Place,
+                    onClick = {
+                        navController.navigate(SubMenuDestinations.MAP)
+                    }
+                )
 
-            ButtonNewPage(
-                title = "DAB",
-                subtitle = "Accéder à la carte",
-                icon = Icons.Default.Place,
-                onClick = {
-                    navController.navigate(SubMenuDestinations.MAP)
-                }
-            )
+                ButtonNewPage(
+                    title = "Graph",
+                    subtitle = "Voir les données",
+                    icon = Icons.Default.Info,
+                    onClick = {
+                        navController.navigate(Destinations.GRAPH)
+                    }
+                )
 
-            ButtonNewPage(
-                title = "Graph",
-                subtitle = "Voir les données",
-                icon = Icons.Default.Info,
-                onClick = {
-                    navController.navigate(Destinations.GRAPH)
-                }
-            )
+                ButtonNewPage(
+                    title = "Aide & Support",
+                    subtitle = "Nous contacter",
+                    icon = Icons.Default.Info,
+                    onClick = {
+                        navController.navigate(Destinations.SUPPORT)
+                    }
+                )
 
-            ButtonNewPage(
-                title = "Aide & Support",
-                subtitle = "Nous contacter",
-                icon = Icons.Default.Info,
-                onClick = {
-                    navController.navigate(Destinations.SUPPORT)
-                }
-            )
 
-            // -------- DEBUG ---------- //
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-
-            ButtonNewPage(
-                title = "Debug",
-                subtitle = "Outils de debug",
-                icon = Icons.Default.PlayArrow,
-                onClick = {
-                    navController.navigate(SubMenuDestinations.DEBUG)
-                }
-            )
+                ButtonNewPage(
+                    title = "Debug",
+                    subtitle = "Outils de debug",
+                    icon = Icons.Default.PlayArrow,
+                    onClick = {
+                        navController.navigate(SubMenuDestinations.DEBUG)
+                    }
+                )
+            }
         }
     }
 }
