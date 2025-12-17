@@ -13,8 +13,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.banqueapp.NotificationHelper
 import com.example.banqueapp.ui.components.TransactionItem
 import com.example.banqueapp.viewModels.UserViewModel
 import com.example.banqueapp.viewModels.UserUiState
@@ -37,6 +39,8 @@ fun VirementDebugScreen(
     val uiState by userViewModel.uiState.collectAsState()
     val transactions by virementViewModel.transactions.collectAsState()
     val currentState = uiState
+
+    val context = LocalContext.current
 
     LaunchedEffect(currentState) {
         if (currentState is UserUiState.LoggedIn) {
@@ -140,6 +144,7 @@ fun VirementDebugScreen(
                                 date = selectedDate
                             )
                             userViewModel.updateBalance(userId, amount)
+                            NotificationHelper.send(context, "Virement", "Nouveau virement de $amount sur votre compte")
                         },
                         modifier = Modifier.weight(1f)
                     ) {

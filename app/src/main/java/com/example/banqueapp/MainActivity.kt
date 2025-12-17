@@ -11,6 +11,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.banqueapp.data.repository.TransactionRepositoryImpl
 import com.example.banqueapp.viewModels.SettingsViewModel
@@ -72,6 +73,8 @@ fun BanqueApp(
         ThemeMode.DARK -> true
         ThemeMode.SYSTEM -> systemInDarkTheme
     }
+
+    NotificationHelper.requestNotificationPermission(LocalContext.current)
 
     BanqueAppTheme(darkTheme = darkTheme) {
 
