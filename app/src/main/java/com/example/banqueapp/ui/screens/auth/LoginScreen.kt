@@ -73,8 +73,7 @@ fun LoginScreen(
                             contentDescription = null
                         )
                     }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword)
+                }
             )
 
             Button(
