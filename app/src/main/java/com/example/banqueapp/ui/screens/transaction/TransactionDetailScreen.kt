@@ -105,13 +105,15 @@ fun TransactionDetailScreen(
                             fontSize = 14.sp,
                             color = Color.White
                         )
-                        Text("User ID : ${transaction!!.userId}", fontSize = 14.sp, color = Color.White)
-                        Text(
-                            "Virement : ${transaction!!.virement}",
-                            fontSize = 14.sp,
-                            color = Color.White
-                        )
-                        Button(onClick = onBackClick) {
+                        //Text("User ID : ${transaction!!.userId}", fontSize = 14.sp, color = Color.White)
+                        if (transaction!!.virement) {
+                            Text(
+                                "Virement",
+                                fontSize = 14.sp,
+                                color = Color.White
+                            )
+                        }
+                            Button(onClick = onBackClick) {
                             Text("Retour")
                         }
                     }
