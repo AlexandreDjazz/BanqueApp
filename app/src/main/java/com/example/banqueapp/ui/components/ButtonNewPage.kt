@@ -34,7 +34,8 @@ fun ButtonNewPage(
     Button(
         onClick = onClick,
         modifier = modifier.fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 5.dp, top = 5.dp),
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
