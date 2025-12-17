@@ -157,6 +157,7 @@ fun VirementDebugScreen(
                         onClick = {
                             val userId = (uiState as? UserUiState.LoggedIn)?.user?.id ?: 0
                             virementViewModel.clearUserTransactions(userId)
+                            userViewModel.reload()
                         },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(

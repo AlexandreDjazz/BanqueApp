@@ -38,6 +38,11 @@ class UserViewModel(
         listenToBalanceEvents()
     }
 
+    fun reload(){
+        loadUser()
+        loadUsers()
+    }
+
     fun loadUser() {
         dataStoreManager.currentUserFlow
             .onEach { user ->
@@ -164,6 +169,7 @@ class UserViewModel(
             userRepository.addUser(user)
             _uiState.value = UserUiState.SignUpSuccess
             onResult(true, null)
+            reload()
         }
     }
 
