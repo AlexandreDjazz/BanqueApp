@@ -10,8 +10,10 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.banqueapp.NotificationHelper
 import com.example.banqueapp.ui.components.TransactionItem
 import com.example.banqueapp.viewModels.TransactionViewModel
 import com.example.banqueapp.viewModels.UserViewModel
@@ -28,6 +30,7 @@ fun TransactionDebugScreen(
     val uiState by userViewModel.uiState.collectAsState()
     val transactions by transactionViewModel.transactions.collectAsState()
     val currentState = uiState
+    val context = LocalContext.current
 
     LaunchedEffect(currentState) {
         if (currentState is UserUiState.LoggedIn) {
@@ -92,12 +95,14 @@ fun TransactionDebugScreen(
                             val isAdd = Random.nextBoolean()
                             val userId = (uiState as? UserUiState.LoggedIn)?.user?.id ?: 0
                             val amount = if (isAdd) 100.0 else -100.0
+                            val action = if (isAdd) "Dépôt" else "Retrait"
                             transactionViewModel.addTransaction(
                                 userId = userId,
-                                title = if (isAdd) "Dépôt" else "Retrait",
+                                title = action,
                                 amount = amount
                             )
                             userViewModel.updateBalance(userId, amount)
+                            NotificationHelper.send(context, action, "Nouveau $action de $amount sur votre compte")
                         },
                         modifier = Modifier.weight(1f)
                     ) {
